@@ -1,20 +1,23 @@
 <template>
     <div>
+        <app-header></app-header>
         <nuxt></nuxt>
-        <my-footer></my-footer>
+        <app-footer></app-footer>
     </div>
 </template>
 
 <script>
 /**
  * @file 默认页面布局
- * @author zxq
+ * @author 小强赵
  */
-import MyFooter from '../components/Footer.vue';
+import appHeader from '../components/app-header.vue';
+import appFooter from '../components/app-footer.vue';
 
 export default {
     components: {
-        MyFooter
+        appHeader,
+        appFooter
     }
 };
 </script>
@@ -24,5 +27,4 @@ export default {
     margin: 0;
     padding: 5px;
 }
-
 </style>
