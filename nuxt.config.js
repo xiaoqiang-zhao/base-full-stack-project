@@ -1,12 +1,12 @@
 /**
  * @file nuxt 配置文件
- * @author zxq
+ * @author 小强赵
  */
 
 module.exports = {
     // Headers of the page
     head: {
-        title: 'SSR FULL STACK',
+        title: '基础全栈项目',
         meta: [{
                 charset: 'utf-8'
             },
@@ -17,7 +17,7 @@ module.exports = {
             {
                 hid: 'description',
                 name: 'description',
-                content: 'SSR FULL STACK'
+                content: '基础全栈项目'
             }
         ],
         link: [{
@@ -36,6 +36,5 @@ module.exports = {
     build: {
         vendor: ['axios']
     },
-    srcDir: 'client/',
-    resourceHints: false
+    srcDir: 'client/'
 };

@@ -11,7 +11,9 @@ import UserModel from './user';
 mongoose.Promise = bluebird;
 const db = 'mongodb://127.0.0.1:27017/test';
 
-mongoose.connect(db).then(() => {
+mongoose.connect(db, {
+    useNewUrlParser: true
+}).then(() => {
     console.log('数据库链接成功');
 }, err => {
     console.log('数据库链接失败:', err);
