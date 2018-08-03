@@ -16,7 +16,7 @@ import config from '../nuxt.config.js';
 
 const app = express();
 const host = getIp() || '127.0.0.1';
-const port = process.env.PORT || 9191;
+const port = process.env.PORT || 9292;
 
 app.use(bodyParser.json());
 app.set('port', port);
