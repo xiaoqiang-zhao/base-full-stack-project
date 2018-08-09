@@ -7,11 +7,11 @@ import mongoose from 'mongoose';
 import bluebird from 'bluebird';
 
 import UserModel from './user';
+import config from '../config.js';
 
 mongoose.Promise = bluebird;
-const db = 'mongodb://127.0.0.1:27017/test';
 
-mongoose.connect(db, {
+mongoose.connect(config.db, {
     useNewUrlParser: true
 }).then(() => {
     console.log('数据库链接成功');

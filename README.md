@@ -1,6 +1,6 @@
 # 基础全栈项目
 
-> 服务端 NodeJs + Koa + Mongo + Redis，浏览器端 Vue + axios + ElementUI，还有 Nuxt 方案来做 SSR，提供用户管理权限管理内容管理等通用功能。
+> 服务端 NodeJs + Express + Mongo + Redis，浏览器端 Vue + axios + ElementUI，还有 Nuxt 方案来做 SSR，提供用户管理权限管理内容管理等通用功能。
 
 ## 项目初始化
 
@@ -35,7 +35,7 @@ router - 负责对外提供 API 的定义，整合下面的 api 和 middleware �
 
 api - 定义 API，过滤无效数据，在一定程度上这就是一份文档；
 
-middleware - 中间件，主要是权限校验(暂时未启用)；
+middleware - 中间件，主要是权限校验；
 
 proxy - 代理层，负责校验(重点是数据的有效性)，组合不同的 model 向上层输出，同时为以后数据存储方式的变更留下扩展点；
 

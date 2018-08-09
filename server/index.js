@@ -5,6 +5,7 @@
 
 import express from 'express';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 import getIp from 'get-ip';
 import {
     Nuxt,
@@ -12,25 +13,27 @@ import {
 } from 'nuxt';
 
 import apiRouter from './api-router';
-import config from '../nuxt.config.js';
+import NuxtConfig from '../nuxt.config.js';
+import config from './config.js';
 
 const app = express();
 const host = getIp() || '127.0.0.1';
-const port = process.env.PORT || 9292;
+const port = process.env.PORT || config.port;
 
 app.use(bodyParser.json());
+app.use(cookieParser(config.sessionSecret));
 app.set('port', port);
 
 // Import API Routes
 app.use('/api', apiRouter);
 
-config.dev = !(process.env.NODE_ENV === 'production');
+NuxtConfig.dev = !(process.env.NODE_ENV === 'production');
 
 // Init Nuxt.js
-const nuxt = new Nuxt(config);
+const nuxt = new Nuxt(NuxtConfig);
 
 // Build only in dev mode
-if (config.dev) {
+if (NuxtConfig.dev) {
     const builder = new Builder(nuxt);
     builder.build();
 }

@@ -9,11 +9,13 @@ import message from 'element-ui/lib/message';
 import 'element-ui/lib/theme-chalk/message.css';
 import 'element-ui/lib/theme-chalk/icon.css';
 
+import config from '../../server/config.js';
+
 let options = {};
 // The server-side needs a full url to works
 if (process.server) {
     const host = getIp() || '127.0.0.1';
-    options.baseURL = `http://${host}:${process.env.PORT || 9090}`;
+    options.baseURL = `http://${host}:${process.env.PORT || config.port}`;
 }
 
 const $http = axios.create(options);

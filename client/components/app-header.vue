@@ -6,7 +6,31 @@
              width="50"
              height="50">
         <span class="title">基础全栈项目</span>
-        <span class="btn-login">登录</span>
+        <span class="btn-login" @click="dialogVisible = true">登录</span>
+
+        <!-- 登录弹框 -->
+        <el-dialog
+            custom-class="login-dialog"
+            title="登录"
+            :visible.sync="dialogVisible"
+            width="500px">
+            <el-form ref="form" :model="form" :rules="formRules" label-width="95px">
+                <el-form-item label="用户名:" prop="name">
+                    <el-input v-model="form.name"></el-input>
+                </el-form-item>
+                <el-form-item label="密码:" prop="name">
+                    <el-input v-model="form.pwd"></el-input>
+                </el-form-item>
+            </el-form>
+            <section slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">
+                    取 消
+                </el-button>
+                <el-button type="primary" @click="login">
+                    确 定
+                </el-button>
+            </section>
+        </el-dialog>
     </header>
 </template>
 <script>
@@ -14,17 +38,63 @@
  * @file 整个应用的头部
  * @author 小强赵
  */
+
+import elButton from 'element-ui/lib/button';
+import 'element-ui/lib/theme-chalk/button.css';
+import elDialog from 'element-ui/lib/dialog';
+import 'element-ui/lib/theme-chalk/dialog.css';
+import elForm from 'element-ui/lib/form';
+import 'element-ui/lib/theme-chalk/form.css';
+import elFormItem from 'element-ui/lib/form-item';
+import 'element-ui/lib/theme-chalk/form-item.css';
+import elInput from 'element-ui/lib/input';
+
+import axios from '@/plugins/axios';
+
 export default {
-    components: {},
+    components: {
+        elButton,
+        elDialog,
+        elForm,
+        elFormItem,
+        elInput
+    },
     data() {
-        return {};
+        return {
+            dialogVisible: false,
+            form: {
+                name: '',
+                pwd: ''
+            },
+            formRules: {
+                name: [
+                    {
+                        required: true,
+                        message: '必填项',
+                        trigger: 'blur'
+                    }
+                ],
+                pwd: [
+                    {
+                        required: true,
+                        message: '必填项',
+                        trigger: 'blur'
+                    }
+                ]
+            }
+        };
+    },
+    methods: {
+        async login() {
+            const result = await axios.post('/api/users/login', this.form);
+        }
     }
 };
 </script>
 <style lang="less" scoped>
 .app-header {
     position: absolute;
-    z-index: 2;
+    z-index: 9998;
     top: 0;
     width: 100%;
     box-sizing: border-box;

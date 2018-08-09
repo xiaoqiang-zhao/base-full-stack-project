@@ -4,10 +4,64 @@
  */
 
 import models from '../models';
+import utiles from '../../utiles';
+import auth from '../middlewares/auth';
 
 const UserModel = models.UserModel;
 
 export default {
+
+    /**
+     * 登录
+     *
+     * @param {Object} form 用户数据
+     * @param {Object} res 返回头
+     * @return {Object} 插入后的数据，Promise 对象
+     */
+    async login(form, res) {
+        // 格式校验
+        let valid = true;
+        let statusInfo;
+        if (form.name === '') {
+            valid = false;
+            statusInfo = '用户名不可为空';
+        }
+
+        if (form.pwd === '') {
+            valid = false;
+            statusInfo = '密码不可为空';
+        }
+        else {
+            form.pwd = utiles.md5(form.pwd);
+        }
+        if (!valid) {
+            return Promise.reject({
+                statusInfo
+            });
+        }
+
+        const users = await this.getUserByName(form.name);
+        let type;
+        let data;
+
+        // 用户未找到
+        if (users.length === 0) {
+            type = 1;
+        }
+        else if (form.pwd !== users[0].pwd) {
+            // form.pwd
+            type = 2;
+        }
+        else {
+            type = 0;
+            auth.setSession(users[0]._id, res);
+        }
+
+        return {
+            type,
+            data
+        };
+    },
 
     /**
      * 获取用户列表
@@ -16,6 +70,18 @@ export default {
      */
     getUserList() {
         return UserModel.find();
+    },
+
+    /**
+     * 通过用户名获取用户
+     *
+     * @param {string} name 用户名
+     * @return {Object} 获取到的用户
+     */
+    getUserByName(name) {
+        return UserModel.find({
+            name
+        });
     },
 
     /**
@@ -43,6 +109,14 @@ export default {
         if (user.name === '') {
             valid = false;
             statusInfo = '用户名不可为空';
+        }
+
+        if (user.pwd === '') {
+            valid = false;
+            statusInfo = '密码不可为空';
+        }
+        else {
+            user.pwd = utiles.md5(user.pwd);
         }
 
         if (!valid) {
