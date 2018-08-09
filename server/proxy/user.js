@@ -6,6 +6,7 @@
 import models from '../models';
 import utiles from '../../utiles';
 import auth from '../middlewares/auth';
+import config from '../config';
 
 const UserModel = models.UserModel;
 
@@ -61,6 +62,29 @@ export default {
             type,
             data
         };
+    },
+
+    async getCurrentUser(req, res) {
+        const token = req.signedCookies[config.authCookieName];
+        let data;
+        if (token === undefined) {
+            data = null;
+        }
+        else {
+            const users = await UserModel.find({
+                _id: token
+            });
+            data = users.length ? users[0] : null;
+        }
+
+        // 去除密码字段
+        if (data) {
+            data = {
+                name: data.name
+            };
+        }
+
+        return data;
     },
 
     /**

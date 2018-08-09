@@ -40,15 +40,13 @@ export default {
      * @param {Object} req 请求
      * @param {Object} res 返回
      */
-    async getCurrentUserInfo(req, res) {
-        const userList = await this.getUserList(req, res);
-        if (userList.length === 0) {
-            res.send({
-                status: 0,
-                statusInfo: '请初始化 Root 用户',
-                data: {}
-            });
-        }
+    async getCurrentUser(req, res) {
+        const currentUser = await user.getCurrentUser(req, res);
+        res.send({
+            status: 0,
+            statusInfo: '',
+            data: currentUser
+        });
     },
 
     /**

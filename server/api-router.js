@@ -16,6 +16,7 @@ router.all('/*', (req, res, next) => {
 
 // 用户相关部分
 router.get('/users', user.getUserList);
+router.get('/users/current', user.getCurrentUser);
 router.delete('/users/:id', user.deleteUserItem);
 router.post('/users', user.addUserItem);
 router.post('/users/login', user.login);

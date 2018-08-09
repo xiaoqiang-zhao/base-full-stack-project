@@ -6,7 +6,8 @@
              width="50"
              height="50">
         <span class="title">基础全栈项目</span>
-        <span class="btn-login" @click="dialogVisible = true">登录</span>
+        <span v-if="currentUser" class="user" @click="dialogVisible = true">{{currentUser.name}}</span>
+        <span v-else class="btn-login" @click="dialogVisible = true">登录</span>
 
         <!-- 登录弹框 -->
         <el-dialog
@@ -67,26 +68,35 @@ export default {
                 pwd: ''
             },
             formRules: {
-                name: [
-                    {
-                        required: true,
-                        message: '必填项',
-                        trigger: 'blur'
-                    }
-                ],
-                pwd: [
-                    {
-                        required: true,
-                        message: '必填项',
-                        trigger: 'blur'
-                    }
-                ]
-            }
+                name: [{
+                    required: true,
+                    message: '必填项',
+                    trigger: 'blur'
+                }],
+                pwd: [{
+                    required: true,
+                    message: '必填项',
+                    trigger: 'blur'
+                }]
+            },
+            currentUser: null
         };
+    },
+    mounted() {
+        axios.get('/api/users/current').then(res => {
+            const currentUser = res.data;
+            if (currentUser) {
+                this.setCurrentUser(currentUser);
+            }
+        });
     },
     methods: {
         async login() {
-            const result = await axios.post('/api/users/login', this.form);
+            const currentUser = await axios.post('/api/users/login', this.form);
+            this.setCurrentUser(currentUser);
+        },
+        setCurrentUser(currentUser) {
+            this.currentUser = currentUser;
         }
     }
 };
@@ -112,10 +122,14 @@ export default {
         vertical-align: top;
         color: #4a4a4a;
     }
-    .btn-login {
+    .btn-login,
+    .user {
         float: right;
         font-size: 14px;
         color: #6b6a6a;
+    }
+    .btn-login {
+        cursor: pointer;
     }
 }
 </style>
