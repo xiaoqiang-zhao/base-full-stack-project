@@ -17,9 +17,9 @@ export default {
      *
      * @param {Object} form 用户数据
      * @param {Object} res 返回头
-     * @return {Object} 插入后的数据，Promise 对象
+     * @return {Object} 登录后的用户数据，Promise 对象
      */
-    async login(form, res) {
+    async signin(form, res) {
         // 格式校验
         let valid = true;
         let statusInfo;
@@ -49,12 +49,16 @@ export default {
         if (users.length === 0) {
             type = 1;
         }
+        // 密码错误
         else if (form.pwd !== users[0].pwd) {
-            // form.pwd
             type = 2;
         }
+        // 登录成功
         else {
             type = 0;
+            data = {
+                name: users[0].name
+            };
             auth.setSession(users[0]._id, res);
         }
 
@@ -62,6 +66,15 @@ export default {
             type,
             data
         };
+    },
+
+    /**
+     * 注销
+     *
+     * @param {Object} res 返回头
+     */
+    signout(res) {
+        auth.clearSession(res);
     },
 
     async getCurrentUser(req, res) {

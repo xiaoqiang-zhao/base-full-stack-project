@@ -22,5 +22,16 @@ export default {
         };
         // cookie 有效期30天
         res.cookie(config.authCookieName, token, opts);
+    },
+
+    /**
+     * 清除 session
+     *
+     * @param {Object} res 返回头
+     */
+    clearSession(res) {
+        res.clearCookie(config.authCookieName, {
+            path: '/'
+        });
     }
 };

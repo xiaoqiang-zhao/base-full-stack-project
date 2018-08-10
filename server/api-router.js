@@ -19,7 +19,8 @@ router.get('/users', user.getUserList);
 router.get('/users/current', user.getCurrentUser);
 router.delete('/users/:id', user.deleteUserItem);
 router.post('/users', user.addUserItem);
-router.post('/users/login', user.login);
+router.post('/users/signin', user.signin);
+router.post('/users/signout', user.signout);
 // 系统初始化完成后注释掉此方法
 // router.get('/init-root-user', user.initRootUser);
 

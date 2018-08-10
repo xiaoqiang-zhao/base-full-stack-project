@@ -13,8 +13,8 @@ export default {
      * @param {Object} req 请求
      * @param {Object} res 返回
      */
-    async login(req, res) {
-        const result = await user.login(req.body, res);
+    async signin(req, res) {
+        const result = await user.signin(req.body, res);
         const map = [
             {
                 statusInfo: '登录成功',
@@ -32,6 +32,20 @@ export default {
         data.status = 0;
 
         res.send(data);
+    },
+
+    /**
+     * 退出登录
+     *
+     * @param {Object} req 请求
+     * @param {Object} res 返回
+     */
+    signout(req, res) {
+        user.signout(res);
+        res.send({
+            status: 0,
+            statusInfo: '退出登录成功'
+        });
     },
 
     /**

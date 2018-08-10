@@ -6,14 +6,24 @@
              width="50"
              height="50">
         <span class="title">基础全栈项目</span>
-        <span v-if="currentUser" class="user" @click="dialogVisible = true">{{currentUser.name}}</span>
-        <span v-else class="btn-login" @click="dialogVisible = true">登录</span>
+        <!-- <span v-if="currentUser" class="user" @click="dialogVisible = true">{{currentUser.name}}</span> -->
+        <el-dropdown v-if="currentUser" trigger="click" @command="handleCommand" class="user">
+            <span class="el-dropdown-link">
+                {{currentUser.name}}<i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="jump">个人中心</el-dropdown-item>
+                <el-dropdown-item command="logout" divided>退出</el-dropdown-item>
+            </el-dropdown-menu>
+        </el-dropdown>
+        <span v-else class="btn-signin" @click="dialogVisible = true">登录</span>
 
         <!-- 登录弹框 -->
         <el-dialog
-            custom-class="login-dialog"
+            custom-class="signin-dialog"
             title="登录"
             :visible.sync="dialogVisible"
+            :append-to-body="true"
             width="500px">
             <el-form ref="form" :model="form" :rules="formRules" label-width="95px">
                 <el-form-item label="用户名:" prop="name">
@@ -27,7 +37,7 @@
                 <el-button @click="dialogVisible = false">
                     取 消
                 </el-button>
-                <el-button type="primary" @click="login">
+                <el-button type="primary" @click="signin">
                     确 定
                 </el-button>
             </section>
@@ -49,6 +59,16 @@ import 'element-ui/lib/theme-chalk/form.css';
 import elFormItem from 'element-ui/lib/form-item';
 import 'element-ui/lib/theme-chalk/form-item.css';
 import elInput from 'element-ui/lib/input';
+import 'element-ui/lib/theme-chalk/input.css';
+import elDropdown from 'element-ui/lib/dropdown';
+import 'element-ui/lib/theme-chalk/dropdown.css';
+import elDropdownMenu from 'element-ui/lib/dropdown-menu';
+import 'element-ui/lib/theme-chalk/dropdown-menu.css';
+import elDropdownItem from 'element-ui/lib/dropdown-item';
+import 'element-ui/lib/theme-chalk/dropdown-item.css';
+import message from 'element-ui/lib/message';
+import 'element-ui/lib/theme-chalk/message.css';
+import 'element-ui/lib/theme-chalk/icon.css';
 
 import axios from '@/plugins/axios';
 
@@ -58,7 +78,10 @@ export default {
         elDialog,
         elForm,
         elFormItem,
-        elInput
+        elInput,
+        elDropdown,
+        elDropdownMenu,
+        elDropdownItem
     },
     data() {
         return {
@@ -91,12 +114,37 @@ export default {
         });
     },
     methods: {
-        async login() {
-            const currentUser = await axios.post('/api/users/login', this.form);
-            this.setCurrentUser(currentUser);
+        async signin() {
+            const res = await axios.post('/api/users/signin', this.form);
+            // 登录成功
+            if (res.data) {
+                this.dialogVisible = false;
+                this.setCurrentUser(res.data);
+            }
+            // 登录失败
+            else {
+                message({
+                    type: 'error',
+                    message: res.statusInfo
+                });
+            }
         },
         setCurrentUser(currentUser) {
             this.currentUser = currentUser;
+        },
+        handleCommand(command) {
+            if (command === 'logout') {
+                // 退出
+                axios.post('/api/users/signout').then(() => {
+                    this.setCurrentUser(null);
+                });
+            }
+            else {
+                // debugger
+                this.$router.push({
+                    path: '/personal-center'
+                });
+            }
         }
     }
 };
@@ -104,7 +152,7 @@ export default {
 <style lang="less" scoped>
 .app-header {
     position: absolute;
-    z-index: 9998;
+    z-index: 2;
     top: 0;
     width: 100%;
     box-sizing: border-box;
@@ -122,14 +170,22 @@ export default {
         vertical-align: top;
         color: #4a4a4a;
     }
-    .btn-login,
+    .btn-signin,
     .user {
         float: right;
         font-size: 14px;
         color: #6b6a6a;
     }
-    .btn-login {
+    .btn-signin {
         cursor: pointer;
     }
+    .user {
+        padding-top: 17px;
+        line-height: 16px;
+    }
+    .el-dropdown-menu {
+        background: #fff;
+    }
+
 }
 </style>
