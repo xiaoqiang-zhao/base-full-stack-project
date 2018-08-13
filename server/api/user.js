@@ -130,8 +130,8 @@ export default {
      */
     // initRootUser(req, res) {
     //     user.addUserItem({
-    //         name: 'root',
-    //         pwd: 'root'
+    //         name: config.rootAcount,
+    //         pwd: config.rootAcount
     //     }).then(data => {
     //         res.send({
     //             status: 0,

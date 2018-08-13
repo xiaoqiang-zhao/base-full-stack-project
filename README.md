@@ -45,6 +45,12 @@ models - 数据实体的定义，和数据库的交互也在此定义。
 
 ## 细节
 
+### api 通用码
+
+status: 1, 需要登录后才能访问接口；
+
+status: 2, 需要管理员权限才能访问接口。
+
 ### assets 和 static
 
 在 `*.vue` 组件中，所有模板和 CSS 都会被 `vue-html-loader` 及 `css-loader` 解析，并查找资源URL。例如，在 `<img src="./logo.png">`

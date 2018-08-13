@@ -77,27 +77,33 @@ export default {
         auth.clearSession(res);
     },
 
-    async getCurrentUser(req, res) {
+    /**
+     * 获取当前用户
+     *
+     * @param {Object} req 请求对象
+     * @return {Object} user 当前用户对象，未登录返回 null
+     */
+    async getCurrentUser(req) {
         const token = req.signedCookies[config.authCookieName];
-        let data;
+        let user;
         if (token === undefined) {
-            data = null;
+            user = null;
         }
         else {
             const users = await UserModel.find({
-                _id: token
+                _id: token // eslint-disable-line
             });
-            data = users.length ? users[0] : null;
+            user = users.length ? users[0] : null;
         }
 
-        // 去除密码字段
-        if (data) {
-            data = {
-                name: data.name
+        // 去无用字段(加密后的密码不能直接返回)
+        if (user) {
+            user = {
+                name: user.name
             };
         }
 
-        return data;
+        return user;
     },
 
     /**
@@ -129,7 +135,7 @@ export default {
      */
     deleteUserItem(id) {
         return UserModel.remove({
-            _id: id
+            _id: id  // eslint-disable-line
         });
     },
 

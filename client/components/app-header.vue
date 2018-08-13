@@ -6,7 +6,6 @@
              width="50"
              height="50">
         <span class="title">基础全栈项目</span>
-        <!-- <span v-if="currentUser" class="user" @click="dialogVisible = true">{{currentUser.name}}</span> -->
         <el-dropdown v-if="currentUser" trigger="click" @command="handleCommand" class="user">
             <span class="el-dropdown-link">
                 {{currentUser.name}}<i class="el-icon-arrow-down el-icon--right"></i>

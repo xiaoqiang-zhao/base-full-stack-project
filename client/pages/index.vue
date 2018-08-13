@@ -98,6 +98,9 @@ export default {
     },
     async asyncData() {
         const res = await axios.get('/api/users');
+        if (res.status !== 0) {
+            res.data = [];
+        }
         return {
             tableData: res.data
         };

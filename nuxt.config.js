@@ -1,5 +1,6 @@
 /**
  * @file nuxt 配置文件
+ *       参考文档：https://nuxtjs.org/guide/configuration/
  * @author 小强赵
  */
 

@@ -28,11 +28,14 @@ $http.interceptors.response.use(res => {
         case 0:
             return data;
         case 1:
-            message({
-                type: 'error',
-                message: data.statusInfo || '请求失败，请稍后重试 /(ㄒoㄒ)/~~'
-            });
-            return Promise.reject(data);
+            if (!process.server) {
+                message({
+                    type: 'error',
+                    message: data.statusInfo || '请求失败，请稍后重试 /(ㄒoㄒ)/~~'
+                });
+                return Promise.reject(data);
+            }
+            return data;
     }
 
 }, err => {
