@@ -47,9 +47,9 @@ models - 数据实体的定义，和数据库的交互也在此定义。
 
 ### api 通用码
 
-status: 1, 需要登录后才能访问接口；
+status: -1, 需要登录后才能访问接口；
 
-status: 2, 需要管理员权限才能访问接口。
+status: -2, 需要管理员权限才能访问接口。
 
 ### assets 和 static
 
@@ -63,6 +63,17 @@ status: 2, 需要管理员权限才能访问接口。
 Webpack 处理的静态资源放在 /src 目录中和其它源文件放一起的原因。事实上，甚至不必把它们全部放在 /src/assets：可以用模块/组件的组织方式来使用它们。例如，可以在每个放置组件的目录中存放静态资源。
 
 相比之下，`static/` 目录下的文件并不会被 Webpack 处理：它们会直接被复制到最终目录（默认是dist/static）下。必须使用绝对路径引用这些文件，这是通过在 `config.js` 文件中的 `build.assetsPublicPath` 和 `build.assetsSubDirectory` 连接来确定的。
+
+### API 系统级错误处理
+
+在 axios 的插件中做了全局错误处理，这样就不需要在业务中每个 API 请求中再做错误处理了。但是有场景下你可能不想用全局的错误处理，想要自己根据业务定制一些错误处理方案，这时你需要传一个配置进去，代码如下：
+
+```js
+axios.post('/api/users', form, {
+    // 是否使用系统提供的错误处理，默认 true
+    axiosSystemErrorMessage: false
+});
+```
 
 ## API
 
