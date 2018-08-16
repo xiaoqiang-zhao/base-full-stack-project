@@ -1,6 +1,6 @@
 <template>
     <div>
-        <app-header></app-header>
+        <app-header ref="header"></app-header>
         <main class="app-main">
             <app-nav></app-nav>
             <nuxt></nuxt>
@@ -23,6 +23,10 @@ export default {
         appHeader,
         appNav,
         appFooter
+    },
+    mounted() {
+        // 用于全局调用登录弹框
+        window.rootVueComponent = this;
     }
 };
 </script>

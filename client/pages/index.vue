@@ -6,10 +6,10 @@
                 type="primary"
                 icon="el-icon-circle-plus-outline"
                 @click="dialogVisible = true">
-                新增资源
+                新增用户
             </el-button>
         </header>
-        <!-- 资源列表 -->
+        <!-- 用户列表 -->
         <el-table
             :data="tableData"
             style="width: 100%">
@@ -36,7 +36,7 @@
                 </template>
             </el-table-column>
         </el-table>
-        <!-- 添加资源的弹框 -->
+        <!-- 添加用户的弹框 -->
         <el-dialog
             title="添加用户"
             :visible.sync="dialogVisible"
@@ -97,13 +97,19 @@ export default {
         elInput
     },
     async asyncData() {
-        const res = await axios.get('/api/users');
-        if (res.status !== 0) {
-            res.data = [];
+        let tableData;
+        try {
+            const res = await axios.get('/api/users');
+            tableData = res.data;
         }
+        catch (e) {
+            tableData = [];
+        }
+
         return {
-            tableData: res.data
+            tableData
         };
+        // Todo: NuxtJs 还有个坑没解决，服务端渲染接口拿不到 token
     },
     data() {
         return {
@@ -164,20 +170,24 @@ export default {
         addUser() {
             this.$refs.form.validate(valid => {
                 if (valid) {
-                    axios.post('/api/users', this.form).then(res => {
-                        message({
-                            type: 'success',
-                            message: '添加成功'
-                        });
-                        this.tableData.push(res.data);
-                    }, res => {
-                        message({
-                            type: 'error',
-                            message: '添加失败 /(ㄒoㄒ)/~~'
-                        });
-                    });
-                    this.dialogVisible = false;
+                    this.requestAddUser(this.form);
                 }
+            });
+        },
+
+        /**
+         * 发起添加用户请求
+         *
+         * @param {Object} form 表单
+         */
+        requestAddUser(form) {
+            axios.post('/api/users', form).then(res => {
+                this.dialogVisible = false;
+                message({
+                    type: 'success',
+                    message: '添加成功'
+                });
+                this.tableData.push(res.data);
             });
         },
 

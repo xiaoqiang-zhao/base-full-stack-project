@@ -12,7 +12,7 @@
             </span>
             <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item command="jump">个人中心</el-dropdown-item>
-                <el-dropdown-item command="logout" divided>退出</el-dropdown-item>
+                <el-dropdown-item command="signout" divided>退出</el-dropdown-item>
             </el-dropdown-menu>
         </el-dropdown>
         <span v-else class="btn-signin" @click="dialogVisible = true">登录</span>
@@ -132,14 +132,13 @@ export default {
             this.currentUser = currentUser;
         },
         handleCommand(command) {
-            if (command === 'logout') {
+            if (command === 'signout') {
                 // 退出
                 axios.post('/api/users/signout').then(() => {
                     this.setCurrentUser(null);
                 });
             }
             else {
-                // debugger
                 this.$router.push({
                     path: '/personal-center'
                 });
