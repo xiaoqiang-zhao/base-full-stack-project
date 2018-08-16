@@ -21,7 +21,7 @@ export default {
         const user = await userProxy.getCurrentUser(req);
         if (user === null) {
             res.send({
-                status: 1,
+                status: -1,
                 statusInfo: '用户未登录或登录已过期'
             });
             logger.trace(`auth with out sign in, URL:${req.originalUrl}, method:${req.method}`);
@@ -32,7 +32,7 @@ export default {
         }
         else {
             res.send({
-                status: 2,
+                status: -2,
                 statusInfo: '此项操作需要管理员权限'
             });
             logger.trace(`auth with out admin, URL:${req.originalUrl}, method:${req.method}`);

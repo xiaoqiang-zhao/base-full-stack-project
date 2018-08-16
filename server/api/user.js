@@ -55,7 +55,7 @@ export default {
      * @param {Object} res 返回
      */
     async getCurrentUser(req, res) {
-        const currentUser = await user.getCurrentUser(req, res);
+        const currentUser = await user.getCurrentUser(req);
         res.send({
             status: 0,
             statusInfo: '',

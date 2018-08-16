@@ -145,7 +145,7 @@ export default {
      * @param {Object} user 用户数据
      * @return {Object} 插入后的数据，Promise 对象
      */
-    addUserItem(user) {
+    async addUserItem(user) {
         // 格式校验
         let valid = true;
         let statusInfo;
@@ -160,6 +160,13 @@ export default {
         }
         else {
             user.pwd = utiles.md5(user.pwd);
+        }
+
+        // 重名校验
+        const users = await this.getUserByName(user.name);
+        if (users.length > 0) {
+            valid = false;
+            statusInfo = `用户名“${user.name}”已存在`;
         }
 
         if (!valid) {
