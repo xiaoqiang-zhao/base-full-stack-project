@@ -69,7 +69,7 @@ import message from 'element-ui/lib/message';
 import 'element-ui/lib/theme-chalk/message.css';
 import 'element-ui/lib/theme-chalk/icon.css';
 
-import axios from '@/plugins/axios';
+import axios from '@/../plugins/axios.js';
 
 export default {
     components: {

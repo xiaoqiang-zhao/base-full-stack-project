@@ -6,12 +6,10 @@
 import getIp from 'get-ip';
 import axios from 'axios';
 import message from 'element-ui/lib/message';
-import 'element-ui/lib/theme-chalk/message.css';
-import 'element-ui/lib/theme-chalk/icon.css';
 
-import config from '../../server/config.js';
+import config from '../server/config.js';
 
-let options = {
+const options = {
     // [自定义设置]是否使用系统提供的错误处理，默认 true
     axiosSystemErrorMessage: true
 };

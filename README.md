@@ -75,6 +75,12 @@ axios.post('/api/users', form, {
 });
 ```
 
+文件： plugins/axios
+
+### SSR cookie
+
+浏览器会自动维护 cookie，但在 node 里，在前一个请求执行成功的回调函数里再发一个请求，这时请求头不会被自动带到下一个，这其中也包括 cookie，也就是说 node 不帮你自动维护 cookie，你需要自己来。于是有了 server/midlewares/ssr-cookie.js 中间件。
+
 ## API
 
 **API 采用 RESTful 形式设计**

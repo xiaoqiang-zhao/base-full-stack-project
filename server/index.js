@@ -15,6 +15,7 @@ import {
 import apiRouter from './api-router';
 import NuxtConfig from '../nuxt.config.js';
 import config from './config.js';
+import ssrCookie from './middlewares/ssr-cookie.js';
 
 const app = express();
 const host = getIp() || '127.0.0.1';
@@ -24,6 +25,8 @@ app.use(bodyParser.json());
 app.use(cookieParser(config.sessionSecret));
 app.set('port', port);
 
+// SSR Cookie
+app.use(ssrCookie);
 // Import API Routes
 app.use('/api', apiRouter);
 

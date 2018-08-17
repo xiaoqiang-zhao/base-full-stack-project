@@ -83,7 +83,7 @@ import elFormItem from 'element-ui/lib/form-item';
 import 'element-ui/lib/theme-chalk/form-item.css';
 import elInput from 'element-ui/lib/input';
 
-import axios from '@/plugins/axios';
+import axios from '@/../plugins/axios';
 import utiles from '@/../utiles';
 
 export default {
@@ -109,7 +109,6 @@ export default {
         return {
             tableData
         };
-        // Todo: NuxtJs 还有个坑没解决，服务端渲染接口拿不到 token
     },
     data() {
         return {

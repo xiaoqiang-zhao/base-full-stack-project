@@ -17,6 +17,8 @@
 import appHeader from '../components/app-header.vue';
 import appNav from '../components/app-nav.vue';
 import appFooter from '../components/app-footer.vue';
+import 'element-ui/lib/theme-chalk/message.css';
+import 'element-ui/lib/theme-chalk/icon.css';
 
 export default {
     components: {
