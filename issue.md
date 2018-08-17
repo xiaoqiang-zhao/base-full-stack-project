@@ -106,3 +106,18 @@ import express from 'express';
 const app = express();
 app.use(ssrCookie);
 ```
+
+## 参考
+
+https://github.com/nuxt-community/express-template/issues/100
+
+https://stackoverflow.com/questions/19936705/how-to-maintain-a-request-session-in-nodejs
+
+https://www.npmjs.com/package/node-axios-cookiejar
+
+转发 cookie 是最简单的做法，而 cookie jar 的本质也是在服务端维护 cookie，但它会使用 cookie 那些属性，如 domain、path、expires 等。比如如果用 request 模块在 node.js 里发送请求，只要设置 let request = request.defaults({jar: true}); 后面的请求 cookie 就在同一个空间下读取了。后续无论用什么语言，只要涉及到在服务端发送多个请求，需要维护请求之间的 cookie，记住 cookiejar 这个名词，一定能搜到解决方案。有些情况 cookie 可能 1 分钟就失效，有些情况存在不同 path 同名 cookie，这时候得按标准来。
+大部分情况不会遇到就是了。除非写针对非常变态网站的爬虫 ── 不过这种场景个人倾向于跑一个 Headless Chrome 这样完整的浏览器去处理。
+
+-- 屈光宇
+
+https://github.com/salesforce/tough-cookie/blob/b897b49223327d2d6a23750c2a4b5343f4c4c7d3/lib/cookie.js
