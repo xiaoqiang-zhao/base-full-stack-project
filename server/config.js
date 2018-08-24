@@ -4,7 +4,7 @@
 
 export default {
     // 服务端口
-    port: 9191,
+    port: 9090,
     // 数据库链接地址
     db: 'mongodb://127.0.0.1:27017/base_full_stack_project',
     // 管理员账号，用于初始化和权限坚定

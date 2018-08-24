@@ -1,24 +1,23 @@
 # 基础全栈项目
 
-> 服务端 NodeJs + Express + Mongo + Redis，浏览器端 Vue + axios + ElementUI，还有 Nuxt 方案来做 SSR，提供用户管理权限管理内容管理等通用功能。
+> 服务端 NodeJs + Express + Mongo + Log4j，浏览器端 Vue + axios + ElementUI，还有 Nuxt 方案来做 SSR，提供用户管理权限管理内容管理等通用功能。
 
 ## 项目初始化
 
 *不保证 Windows 系统的兼容性*
 
-1. 安装 `Node.js[必须]` `MongoDB[必须]` `Redis[必须]`
-2. 启动 MongoDB 和 Redis
+1. 安装 `Node.js[必须]` `MongoDB[必须]`
+2. 安装启动 MongoDB
 3. `npm install` 安装依赖包
 4. `npm run dev`
 5. visit `http://localhost:9090`
 6. done!
 
-MongoDB 数据库名 test。
-
 MongoDB 附注：
 - 在根目录下新建 data/db: `sudo mkdir -p /data/db`;
 - 然后把 MongoDB 的包放到 /usr/local 下，当前项目用的是 mongodb-osx-x86_64-enterprise-3.6.0 这一版；
 - 启动 MongoDB: sudo /usr/local/mongodb-osx-x86_64-enterprise-3.6.0/bin/mongod
+- 新建数据库，数据库名 base_full_stack_project
 
 ## 部署
 

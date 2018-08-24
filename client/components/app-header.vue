@@ -1,20 +1,36 @@
 <template>
     <header class="app-header">
+        <!-- logo 部分 -->
         <img src="@/assets/img/logo.png"
              class="logo"
              alt="logo"
              width="50"
              height="50">
         <span class="title">基础全栈项目</span>
-        <el-dropdown v-if="currentUser" trigger="click" @command="handleCommand" class="user">
-            <span class="el-dropdown-link">
-                {{currentUser.name}}<i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="jump">个人中心</el-dropdown-item>
-                <el-dropdown-item command="signout" divided>退出</el-dropdown-item>
-            </el-dropdown-menu>
-        </el-dropdown>
+
+        <!-- 导航部分 -->
+        <el-menu
+            class="menu"
+            :router="true"
+            :default-active="activeIndex"
+            mode="horizontal">
+            <el-menu-item index="/articles">文章管理</el-menu-item>
+            <!-- <el-menu-item index="/articles">统计分析</el-menu-item> -->
+            <el-menu-item index="/users">用户管理</el-menu-item>
+        </el-menu>
+
+        <!-- 用户部分 -->
+        <div v-if="currentUser" class="user">
+            <el-dropdown trigger="click" @command="handleCommand">
+                <span class="el-dropdown-link">
+                    {{currentUser.name}}<i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item command="jump">个人中心</el-dropdown-item>
+                    <el-dropdown-item command="signout" divided>退出</el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
+        </div>
         <span v-else class="btn-signin" @click="dialogVisible = true">登录</span>
 
         <!-- 登录弹框 -->
@@ -49,30 +65,42 @@
  * @author 小强赵
  */
 
+import 'element-ui/lib/theme-chalk/icon.css';
+
+import elMenu from 'element-ui/lib/menu';
+import 'element-ui/lib/theme-chalk/menu.css';
+import elMenuItem from 'element-ui/lib/menu-item';
+import 'element-ui/lib/theme-chalk/menu-item.css';
+
 import elButton from 'element-ui/lib/button';
 import 'element-ui/lib/theme-chalk/button.css';
+
 import elDialog from 'element-ui/lib/dialog';
 import 'element-ui/lib/theme-chalk/dialog.css';
+
 import elForm from 'element-ui/lib/form';
 import 'element-ui/lib/theme-chalk/form.css';
 import elFormItem from 'element-ui/lib/form-item';
 import 'element-ui/lib/theme-chalk/form-item.css';
 import elInput from 'element-ui/lib/input';
 import 'element-ui/lib/theme-chalk/input.css';
+
 import elDropdown from 'element-ui/lib/dropdown';
 import 'element-ui/lib/theme-chalk/dropdown.css';
 import elDropdownMenu from 'element-ui/lib/dropdown-menu';
 import 'element-ui/lib/theme-chalk/dropdown-menu.css';
 import elDropdownItem from 'element-ui/lib/dropdown-item';
 import 'element-ui/lib/theme-chalk/dropdown-item.css';
+
 import message from 'element-ui/lib/message';
 import 'element-ui/lib/theme-chalk/message.css';
-import 'element-ui/lib/theme-chalk/icon.css';
 
 import axios from '@/../plugins/axios.js';
 
 export default {
     components: {
+        elMenu,
+        elMenuItem,
         elButton,
         elDialog,
         elForm,
@@ -84,6 +112,7 @@ export default {
     },
     data() {
         return {
+            activeIndex: '/articles',
             dialogVisible: false,
             form: {
                 name: '',
@@ -105,7 +134,10 @@ export default {
         };
     },
     mounted() {
-        axios.get('/api/users/current').then(res => {
+        axios.get('/api/users/current', {
+            // 去除统一提示
+            axiosSystemErrorMessage: false
+        }).then(res => {
             const currentUser = res.data;
             if (currentUser) {
                 this.setCurrentUser(currentUser);
@@ -149,28 +181,37 @@ export default {
 </script>
 <style lang="less" scoped>
 .app-header {
-    position: absolute;
+    display: flex;
+    position: relative;
     z-index: 2;
-    top: 0;
     width: 100%;
     box-sizing: border-box;
     box-shadow: 2px 3px 5px rgba(0, 0, 0, .1);
-    padding: 5px 20px;
-    line-height: 50px;
+    padding: 0 20px;
+    line-height: 60px;
     .logo {
+        flex: 0 0 50px;
         vertical-align: top;
         height: 50px;
+        margin: 5px 0;
     }
     .title {
+        flex: 0 0 150px;
         display: inline-block;
         padding-left: 10px;
         font-size: 20px;
         vertical-align: top;
         color: #4a4a4a;
     }
+    .menu {
+        flex: 1;
+        display: inline-block;
+        border: none;
+        text-align: center;
+    }
     .btn-signin,
     .user {
-        float: right;
+        flex: 0 0 50px;
         font-size: 14px;
         color: #6b6a6a;
     }
@@ -178,7 +219,7 @@ export default {
         cursor: pointer;
     }
     .user {
-        padding-top: 17px;
+        padding-top: 24px;
         line-height: 16px;
     }
     .el-dropdown-menu {
