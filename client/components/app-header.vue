@@ -143,6 +143,25 @@ export default {
                 this.setCurrentUser(currentUser);
             }
         });
+
+        // 处理刷新时 menu 选中某个 item
+        const map = [
+            {
+                paths: ['/users'],
+                path: '/users'
+            },
+            // 首页配置需要放在最后面
+            {
+                paths: ['/articles', '/'],
+                path: '/articles'
+            }
+        ];
+        map.some(item => {
+            if (item.paths.indexOf(this.$route.path) > -1) {
+                this.activeIndex = item.path;
+                return true;
+            }
+        });
     },
     methods: {
         async signin() {

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="page-root">
         <app-header ref="header"></app-header>
         <nuxt to="/articles"></nuxt>
         <app-footer></app-footer>
@@ -29,6 +29,10 @@ export default {
 </script>
 
 <style lang="less">
+.page-root {
+    position: relative;
+    padding-bottom: 20px;
+}
 .container {
     padding: 5px;
 }
