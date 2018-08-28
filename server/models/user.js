@@ -1,5 +1,5 @@
 /**
- * @file 资源集合项数据格式定义
+ * @file “用户”数据格式定义
  */
 import mongoose from 'mongoose';
 import BaseModel from './base-model';
