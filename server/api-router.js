@@ -4,6 +4,7 @@
  */
 
 import {Router} from 'express';
+import article from './api/article';
 import user from './api/user';
 import upload from './api/upload';
 import logger from './logger';
@@ -25,6 +26,12 @@ router.post('/users/signin', user.signin);
 router.post('/users/signout', user.signout);
 // 系统初始化完成后注释掉此方法
 // router.get('/init-root-user', user.initRootUser);
+
+// 文章相关部分
+router.get('/articles', article.getArticleList);
+router.post('/articles', auth.userRequired, article.addArticleItem);
+router.post('/articles/:id', auth.userRequired, article.updateArticleItem);
+router.delete('/articles/:id', auth.userRequired, article.deleteArticleItem);
 
 // 独立接口
 router.post('/upload', upload);

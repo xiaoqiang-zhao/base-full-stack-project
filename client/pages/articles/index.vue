@@ -5,7 +5,7 @@
             <el-button
                 type="primary"
                 icon="el-icon-circle-plus-outline"
-                @click="toDetail(0, 1)">
+                @click="toDetail(null, 1)">
                 新增文章
             </el-button>
         </header>
@@ -53,11 +53,8 @@ import messageBox from 'element-ui/lib/message-box';
 import 'element-ui/lib/theme-chalk/message-box.css';
 import message from 'element-ui/lib/message';
 import 'element-ui/lib/theme-chalk/message.css';
-import elForm from 'element-ui/lib/form';
-import 'element-ui/lib/theme-chalk/form.css';
-import elFormItem from 'element-ui/lib/form-item';
-import 'element-ui/lib/theme-chalk/form-item.css';
-import elInput from 'element-ui/lib/input';
+import loading from 'element-ui/lib/loading';
+import 'element-ui/lib/theme-chalk/loading.css';
 
 import axios from '@/../plugins/axios';
 import utiles from '@/../utiles';
@@ -66,10 +63,7 @@ export default {
     components: {
         elTable,
         elTableColumn,
-        elButton,
-        elForm,
-        elFormItem,
-        elInput
+        elButton
     },
     // async asyncData() {
     //     let tableData;
@@ -95,17 +89,28 @@ export default {
         /**
          * 到文章详情页
          *
-         * @param {string} id 文章 ID，新建时 ID 为 0
+         * @param {string} id 文章 ID，新建时 ID 为 null
          * @param {number} isEdit 是否可编辑，0: 不可编辑只展示，1: 可编辑包括添加新文章
          */
         toDetail(id, isEdit) {
-            this.$router.push({
-                path: `/articles/${id}`,
-                query: {
-                    isEdit
-                }
-            });
+            if (id === null) {
+                const load = loading.service({
+                    lock: true,
+                    text: '文章新建中...',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                });
 
+                axios.post('/api/articles', {}).then(res => {
+                    load.close();
+                    this.$router.push({
+                        path: `/articles/${res._id}`,
+                        query: {
+                            isEdit
+                        }
+                    });
+                });
+            }
         },
 
         /**
