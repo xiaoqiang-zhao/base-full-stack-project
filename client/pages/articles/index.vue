@@ -33,6 +33,7 @@
                 width="100">
                 <template slot-scope="scope">
                     <el-button @click="deleteArticle(scope.row)" type="text" size="small">删除</el-button>
+                    <el-button @click="editArticle(scope.row)" type="text" size="small">编辑</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -65,20 +66,20 @@ export default {
         elTableColumn,
         elButton
     },
-    // async asyncData() {
-    //     let tableData;
-    //     try {
-    //         const res = await axios.get('/api/articles');
-    //         tableData = res.data;
-    //     }
-    //     catch (e) {
-    //         tableData = [];
-    //     }
+    async asyncData() {
+        let tableData;
+        try {
+            const res = await axios.get('/api/articles');
+            tableData = res.data;
+        }
+        catch (e) {
+            tableData = [];
+        }
 
-    //     return {
-    //         tableData
-    //     };
-    // },
+        return {
+            tableData
+        };
+    },
     data() {
         return {
             tableData: []
@@ -104,7 +105,7 @@ export default {
                 axios.post('/api/articles', {}).then(res => {
                     load.close();
                     this.$router.push({
-                        path: `/articles/${res._id}`,
+                        path: `/articles/${res.data._id}`,
                         query: {
                             isEdit
                         }
@@ -136,6 +137,20 @@ export default {
                     type: 'success',
                     message: '删除成功!'
                 });
+            });
+        },
+
+        /**
+         * 编辑文章(到编辑页)
+         *
+         * @param {Object} articleItem 一条文章数据
+         */
+        editArticle(articleItem) {
+            this.$router.push({
+                path: `/articles/${articleItem._id}`,
+                query: {
+                    isEdit: 1
+                }
             });
         },
 
