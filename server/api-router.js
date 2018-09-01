@@ -29,6 +29,7 @@ router.post('/users/signout', user.signout);
 
 // 文章相关部分
 router.get('/articles', article.getArticleList);
+router.get('/articles/:id', article.getArticleById);
 router.post('/articles', auth.userRequired, article.addArticleItem);
 router.post('/articles/:id', auth.userRequired, article.updateArticleItem);
 router.delete('/articles/:id', auth.userRequired, article.deleteArticleItem);

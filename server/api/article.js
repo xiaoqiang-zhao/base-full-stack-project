@@ -86,5 +86,21 @@ export default {
                 data
             });
         });
+    },
+
+    /**
+     * 通过 ID 获取某篇文章
+     *
+     * @param {Object} req 请求
+     * @param {Object} res 返回
+     */
+    getArticleById(req, res) {
+        article.getArticleById(req.params.id).then(data => {
+            res.send({
+                status: 0,
+                statusInfo: '',
+                data
+            });
+        });
     }
 };

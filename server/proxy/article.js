@@ -30,7 +30,6 @@ export default {
             ## 二级标题
             `.replace(/ /g, '')
         };
-        console.log(article);
 
         // 对象
         const articleModel = new ArticleModel(article);
@@ -88,5 +87,22 @@ export default {
      */
     getArticleList() {
         return ArticleModel.find();
+    },
+
+    /**
+     * 通过 ID 获取某篇文章
+     *
+     * @param {string} id 文章id
+     * @return {Object} 查询结果，Promise 对象
+     */
+    async getArticleById(id) {
+        let article;
+        const articles = await ArticleModel.find({
+            '_id': id // eslint-disable-line
+        });
+
+        article = articles.length ? articles[0] : null;
+
+        return article;
     }
 };
