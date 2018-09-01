@@ -15,7 +15,7 @@
                 :autosize="{minRows: 55}"
                 resize="none"
                 placeholder="请输入文章内容"
-                v-model="content">
+                v-model="mdText">
             </el-input>
         </div>
     </section>
@@ -62,79 +62,10 @@ export default {
         elFormItem,
         elInput
     },
-    // async asyncData() {
-    //     let tableData;
-    //     try {
-    //         const res = await axios.get('/api/articles');
-    //         tableData = res.data;
-    //     }
-    //     catch (e) {
-    //         tableData = [];
-    //     }
-
-    //     return {
-    //         tableData
-    //     };
-    // },
     data() {
         return {
             mdHTML: '',
-            mdText: `
-# 大标题
-
-> 说明文字。
-
-## 二级标题
-
-CSS 代码
-
-~~~css
-h1 {
-  color: red;
-}
-~~~
-
-Less 代码
-~~~less
-.a {
-  .b {
-    display: block;
-  }
-}
-~~~
-
-Javascript 代码
-~~~jsvascript
-let a = '';
-console.log(a);
-~~~
-
-表格：
-
-Name | Academy | score 
-- | :-: | -: 
-Harry Potter | Gryffindor| 90 
-Hermione Granger | Gryffindor | 100 
-Draco Malfoy | Slytherin | 90
-
-图片：-- 图片的引用路径是个问题，需要制定一套规则，比如图片库..
-
-![ddd](/static/img/long.060c26b.jpg)
-
-文本样式：[链接](http://baidu.com)  **加粗** \`引用\` ~~删除~~
-
-1. 列表一
-2. 列表二
-
-- 列表一
-- 列表二
-
-换行  
-而非换段落
-
-换段落
-
-换段落`,
+            mdText: '',
             content: ''
         };
     },
@@ -144,7 +75,10 @@ Draco Malfoy | Slytherin | 90
         }
     },
     mounted() {
-        this.mdToHtml();
+        axios.get(`/api/articles/${this.$route.params.id}`).then(res => {
+            this.mdText = res.data.mdContent;
+            this.mdToHtml();
+        });
     },
     methods: {
 
