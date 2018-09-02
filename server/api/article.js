@@ -14,7 +14,7 @@ export default {
      * @param {Object} res 返回
      */
     addArticleItem(req, res) {
-        article.addArticleItem().then(data => {
+        article.addArticleItem(req).then(data => {
             res.send({
                 status: 0,
                 statusInfo: '',

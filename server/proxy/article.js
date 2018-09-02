@@ -4,9 +4,7 @@
  */
 
 import models from '../models';
-import utiles from '../../utiles';
-import auth from '../middlewares/auth';
-import config from '../config';
+import userProxy from './user';
 
 const ArticleModel = models.ArticleModel;
 
@@ -15,12 +13,17 @@ export default {
     /**
      * 插入篇文章数据
      *
+     * @param {Object} req 请求对象
      * @return {Object} 插入后的数据，Promise 对象
      */
-    async addArticleItem() {
+    async addArticleItem(req) {
+        // 当前用户为作者
+        const auth = await userProxy.getCurrentUser(req);
+
         // 新文章默认内容
         const article = {
-            title: '标题',
+            authId: auth._id,
+            title: '标题233',
             description: '描述',
             mdContent: `
             # 标题

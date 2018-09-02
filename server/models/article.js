@@ -12,6 +12,8 @@ const articleSchema = new Schema({
     description: {type: String},
     // markdown 内容
     mdContent: {type: String},
+    // 作者 ID
+    authId: {type: String},
     // 创建时间
     createDate: {type: String},
     // 更新时间

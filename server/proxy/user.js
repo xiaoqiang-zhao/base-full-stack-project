@@ -99,7 +99,8 @@ export default {
         // 去无用字段(加密后的密码不能直接返回)
         if (user) {
             user = {
-                name: user.name
+                name: user.name,
+                _id: user._id // eslint-disable-line
             };
         }
 
