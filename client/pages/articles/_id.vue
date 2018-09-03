@@ -6,7 +6,9 @@
         </div>
         <!-- 中间 按钮区 -->
         <div class="middle">
-            <button class="btn iconfont icon-save"></button>
+            <button class="btn iconfont icon-save" @click="updateArticle"></button>
+            <button class="btn iconfont icon-img"></button>
+            <button class="btn iconfont icon-fold-right"></button>
         </div>
         <!-- 编辑区 -->
         <div class="editor">
@@ -83,10 +85,10 @@ export default {
     methods: {
 
         /**
-         * 添加一条文章数据
+         * 将 markdown 转为 html
+         *
+         * @param {string} md markdown 内容
          */
-        addArticle() {
-        },
         mdToHtml(md) {
             const me = this;
             remark()
@@ -95,6 +97,15 @@ export default {
                 .process(this.mdText, (err, file) => {
                     me.mdHTML = file.contents;
                 });
+        },
+
+        /**
+         * 更新文章内容
+         */
+        updateArticle() {
+            axios.post(`/api/articles/${this.$route.params.id}`, {
+                mdContent: this.mdText
+            });
         }
     }
 };
@@ -118,12 +129,12 @@ export default {
         flex: 0 0 80px;
         margin: 5px;
         text-align: center;
-        padding-top: 10px;
         .btn {
             display: inline-block;
             width: 2.5em;
             height: 2.5em;
             line-height: 2.5em;
+            margin: 20px 0;
             background: none;
             border: none;
             border-radius: 50px;
@@ -131,6 +142,11 @@ export default {
             text-align: center;
             box-shadow: 2px 3px 5px rgba(0, 0, 0, .1), -2px -3px 5px rgba(0, 0, 0, .1);
             outline: none;
+            cursor: pointer;
+            &:hover {
+                background: #409EFF;
+                color: #fff;
+            }
         }
     }
 }
