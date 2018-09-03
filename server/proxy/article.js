@@ -23,15 +23,15 @@ export default {
         // 新文章默认内容
         const article = {
             authId: auth._id,
-            title: '标题233',
+            title: '标题',
             description: '描述',
-            mdContent: `
-            # 标题
+            mdContent:
+`# 标题
 
-            > 描述
+> 描述
 
-            ## 二级标题
-            `.replace(/ /g, '')
+## 二级标题
+`
         };
 
         // 对象

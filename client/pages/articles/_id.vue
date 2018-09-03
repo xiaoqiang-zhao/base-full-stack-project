@@ -6,7 +6,7 @@
         </div>
         <!-- 中间 按钮区 -->
         <div class="middle">
-            按钮
+            <button class="btn iconfont icon-save"></button>
         </div>
         <!-- 编辑区 -->
         <div class="editor">
@@ -118,6 +118,20 @@ export default {
         flex: 0 0 80px;
         margin: 5px;
         text-align: center;
+        padding-top: 10px;
+        .btn {
+            display: inline-block;
+            width: 2.5em;
+            height: 2.5em;
+            line-height: 2.5em;
+            background: none;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            text-align: center;
+            box-shadow: 2px 3px 5px rgba(0, 0, 0, .1), -2px -3px 5px rgba(0, 0, 0, .1);
+            outline: none;
+        }
     }
 }
 </style>
