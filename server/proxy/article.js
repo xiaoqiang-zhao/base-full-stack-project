@@ -50,7 +50,7 @@ export default {
      */
     deleteArticleItem(id) {
         return ArticleModel.remove({
-            _id: id  // eslint-disable-line
+            _id: id // eslint-disable-line
         });
     },
 
@@ -62,30 +62,31 @@ export default {
      * @return {Object} 插入后的数据，Promise 对象
      */
     async updateArticleItem(id, article) {
+        const articleObj = this.mdToObject(article.mdContent);
+
         // 格式校验
-        // let valid = true;
-        // let statusInfo;
-        // if (article.title === '') {
-        //     valid = false;
-        //     statusInfo = '标题不可为空';
-        // }
+        let valid = true;
+        let statusInfo;
+        if (articleObj.title === '') {
+            valid = false;
+            statusInfo = '标题不可为空';
+        }
 
-        // if (article.content === '') {
-        //     valid = false;
-        //     statusInfo = '内容不可为空';
-        // }
+        if (articleObj.description === '') {
+            valid = false;
+            statusInfo = '描述不可为空';
+        }
 
-        // if (!valid) {
-        //     return Promise.reject({
-        //         statusInfo
-        //     });
-        // }
+        if (!valid) {
+            return Promise.reject({
+                statusInfo
+            });
+        }
 
         // 对象
-        // const articleModel = new ArticleModel(article);
-        // return articleModel.save();
-
-        return this.mdToObject(article.mdContent);
+        return ArticleModel.updateOne({
+            _id: id // eslint-disable-line
+        }, articleObj);
     },
 
     /**
