@@ -10,6 +10,17 @@ import unified from 'unified';
 import markdown from 'remark-parse';
 
 const ArticleModel = models.ArticleModel;
+// 新建文章默认内容
+const articleDefaultMdContent = `# 标题
+
+> 描述
+
+## 二级标题
+
+段落内容
+
+## 参考
+`;
 
 export default {
 
@@ -24,17 +35,10 @@ export default {
         const auth = await userProxy.getCurrentUser(req);
 
         // 新文章默认内容
+        const articleObj = this.mdToObject(articleDefaultMdContent);
         const article = {
             authId: auth._id,
-            title: '标题',
-            description: '描述',
-            mdContent:
-`# 标题
-
-> 描述
-
-## 二级标题
-`
+            ...articleObj
         };
 
         // 对象
