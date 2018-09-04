@@ -120,6 +120,15 @@ export default {
         box-shadow: 2px 3px 5px rgba(0, 0, 0, .1), -2px -3px 5px rgba(0, 0, 0, .1);
     }
 
+    // markdown 样式部分自定义
+    .markdown-body {
+        padding: 10px;
+        h1 {
+            border-bottom: none;
+            text-align: center;
+        }
+    }
+
     .editor .el-textarea > textarea {
         border: none;
         padding: 10px 13px;
