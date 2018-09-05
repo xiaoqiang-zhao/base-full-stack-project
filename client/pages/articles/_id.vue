@@ -33,9 +33,6 @@ import 'element-ui/lib/theme-default/table.css';
 import 'element-ui/lib/theme-chalk/icon.css';
 import elButton from 'element-ui/lib/button';
 import 'element-ui/lib/theme-chalk/button.css';
-import messageBox from 'element-ui/lib/message-box';
-import 'element-ui/lib/theme-chalk/message-box.css';
-import message from 'element-ui/lib/message';
 import 'element-ui/lib/theme-chalk/message.css';
 import elForm from 'element-ui/lib/form';
 import 'element-ui/lib/theme-chalk/form.css';
@@ -53,7 +50,6 @@ import 'highlight.js/styles/solarized-light.css';
 import 'github-markdown-css/github-markdown.css';
 
 import axios from '@/../plugins/axios';
-import utiles from '@/../utiles';
 
 export default {
     components: {

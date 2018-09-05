@@ -1,5 +1,5 @@
 <template>
-    <articles></articles>
+    <articles :index-table-data="tableData"></articles>
 </template>
 <script>
 /**
@@ -8,10 +8,26 @@
  */
 
 import articles from './articles';
+import axios from '@/../plugins/axios';
 
 export default {
     components: {
         articles
+    },
+    // 组件并不会服务器端渲染，需要从父页面传过去
+    async asyncData() {
+        let tableData;
+        try {
+            const res = await axios.get('/api/articles');
+            tableData = res.data;
+        }
+        catch (e) {
+            tableData = [];
+        }
+
+        return {
+            tableData
+        };
     }
 };
 </script>

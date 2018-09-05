@@ -66,6 +66,12 @@ export default {
         elTableColumn,
         elButton
     },
+    props: {
+        indexTableData: {
+            'type': Array,
+            'default': () => []
+        }
+    },
     async asyncData() {
         let tableData;
         try {
@@ -81,8 +87,12 @@ export default {
         };
     },
     data() {
+        let tableData = [];
+        if (this.indexTableData.length > 0) {
+            tableData = this.indexTableData;
+        }
         return {
-            tableData: []
+            tableData
         };
     },
     methods: {
