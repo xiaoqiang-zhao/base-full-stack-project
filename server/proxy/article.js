@@ -106,8 +106,9 @@ export default {
 
         // 标题
         let title;
-        const firstChild = tree.children[0];
-        if (firstChild.type === 'heading'
+        const firstChild = tree.children.length < 0 ? tree.children[0] : null;
+        if (firstChild
+            && firstChild.type === 'heading'
             && firstChild.depth === 1
             && firstChild.children.length > 0
         ) {
@@ -116,7 +117,7 @@ export default {
 
         // 描述
         let description;
-        const secondChild = tree.children[1];
+        const secondChild = tree.children.length > 1 ? tree.children[1] : null;
         if (secondChild
             && secondChild.type === 'blockquote'
             && secondChild.children.length > 0
