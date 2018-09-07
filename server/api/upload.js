@@ -18,7 +18,9 @@ export default (req, res, next) => {
         res.send({
             status: 0,
             statusInfo: '上传成功',
-            data: {}
+            data: {
+                path: file.file.path
+            }
         });
     });
 };

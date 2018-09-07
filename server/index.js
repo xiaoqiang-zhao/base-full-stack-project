@@ -29,6 +29,8 @@ app.set('port', port);
 app.use(ssrCookie);
 // Import API Routes
 app.use('/api', apiRouter);
+// 静态文件
+app.use('/upload-files', express.static(__dirname + '/../upload-files/'));
 
 NuxtConfig.dev = !(process.env.NODE_ENV === 'production');
 
