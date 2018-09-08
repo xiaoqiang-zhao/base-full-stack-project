@@ -106,7 +106,7 @@ export default {
 
         // 标题
         let title;
-        const firstChild = tree.children.length < 0 ? tree.children[0] : null;
+        const firstChild = tree.children.length > 0 ? tree.children[0] : null;
         if (firstChild
             && firstChild.type === 'heading'
             && firstChild.depth === 1
