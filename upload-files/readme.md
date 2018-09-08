@@ -2,8 +2,4 @@
 
 ## 用途
 
-用户上传的文件在此存放。
-
-## 存放规则
-
-待续...
+用户上传的文件在此存放。可以直接访问，如： http:localhost:9090/upload-files/upload_1.jpeg
