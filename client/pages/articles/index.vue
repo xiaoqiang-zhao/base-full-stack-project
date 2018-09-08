@@ -5,7 +5,7 @@
             <el-button
                 type="primary"
                 icon="el-icon-circle-plus-outline"
-                @click="toDetail(null, 1)">
+                @click="toArticleDetail(null, 1)">
                 新增文章
             </el-button>
         </header>
@@ -30,10 +30,11 @@
             </el-table-column>
             <el-table-column
                 label="操作"
-                width="100">
+                width="150">
                 <template slot-scope="scope">
                     <el-button @click="deleteArticle(scope.row)" type="text" size="small">删除</el-button>
-                    <el-button @click="editArticle(scope.row)" type="text" size="small">编辑</el-button>
+                    <el-button @click="toArticleDetail(scope.row._id, 1)" type="text" size="small">编辑</el-button>
+                    <el-button @click="toArticleDetail(scope.row._id, 0)" type="text" size="small">查看</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -103,7 +104,7 @@ export default {
          * @param {string} id 文章 ID，新建时 ID 为 null
          * @param {number} isEdit 是否可编辑，0: 不可编辑只展示，1: 可编辑包括添加新文章
          */
-        toDetail(id, isEdit) {
+        toArticleDetail(id, isEdit) {
             if (id === null) {
                 const load = loading.service({
                     lock: true,
@@ -120,6 +121,14 @@ export default {
                             isEdit
                         }
                     });
+                });
+            }
+            else {
+                this.$router.push({
+                    path: `/articles/${id}`,
+                    query: {
+                        isEdit
+                    }
                 });
             }
         },
@@ -148,26 +157,6 @@ export default {
                     message: '删除成功!'
                 });
             });
-        },
-
-        /**
-         * 编辑文章(到编辑页)
-         *
-         * @param {Object} articleItem 一条文章数据
-         */
-        editArticle(articleItem) {
-            this.$router.push({
-                path: `/articles/${articleItem._id}`,
-                query: {
-                    isEdit: 1
-                }
-            });
-        },
-
-        /**
-         * 添加一条文章数据
-         */
-        addArticle() {
         },
 
         /**
