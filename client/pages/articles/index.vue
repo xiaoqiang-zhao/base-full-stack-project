@@ -15,18 +15,19 @@
             style="width: 100%">
             <el-table-column
                 label="文章标题"
-                prop="title"
-                width="180">
+                prop="title">
             </el-table-column>
             <el-table-column
                 label="创建时间"
                 prop="createDate"
-                :formatter="dateFormatter">
+                :formatter="dateFormatter"
+                width="180">
             </el-table-column>
             <el-table-column
                 label="更新时间"
                 prop="updateDate"
-                :formatter="dateFormatter">
+                :formatter="dateFormatter"
+                width="180">
             </el-table-column>
             <el-table-column
                 label="操作"
