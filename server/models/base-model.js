@@ -3,13 +3,22 @@
  * @author 小强赵
  */
 
-// import utiles from '../utiles';
-
 export default function (schema) {
-    // 初始化新建时间和更新时间，通用
-    schema.methods.initDate = function () {
+
+    schema.pre('save', function (next) {
         const date = new Date().getTime().toString();
         this.createDate = date;
         this.updateDate = date;
-    };
+        next();
+    });
+
+    schema.pre('updateOne', function (next) {
+        const date = new Date().getTime().toString();
+        this.updateOne({}, {
+            $set: {
+                updateDate: date
+            }
+        });
+        next();
+    });
 }

@@ -18,10 +18,4 @@ const userSchema = new Schema({
 
 userSchema.plugin(BaseModel);
 
-// 插入一个用户时，初始化新建时间和更新时间两个字段
-userSchema.pre('save', function (next) {
-    this.initDate();
-    next();
-});
-
 export default mongoose.model('user', userSchema);

@@ -22,10 +22,4 @@ const articleSchema = new Schema({
 
 articleSchema.plugin(BaseModel);
 
-// 插入一篇文章时，初始化新建时间和更新时间两个字段
-articleSchema.pre('save', function (next) {
-    this.initDate();
-    next();
-});
-
 export default mongoose.model('article', articleSchema);
