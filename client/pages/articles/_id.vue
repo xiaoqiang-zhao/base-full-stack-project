@@ -5,13 +5,24 @@
             预览
         </div>
         <!-- 中间 按钮区 -->
-        <div class="middle">
-            <button class="btn iconfont icon-save" @click="updateArticle"></button>
-            <button class="btn iconfont icon-img" @click="imgDialogVisible = true"></button>
-            <button class="btn iconfont icon-fold-right"></button>
+        <div v-if="status === 'editor'" class="middle" :class="{'editor-folded': isFoldEditor}">
+            <button
+                class="btn iconfont icon-save"
+                @click="updateArticle">
+            </button>
+            <button
+                v-if="!isFoldEditor"
+                class="btn iconfont icon-img"
+                @click="imgDialogVisible = true">
+            </button>
+            <button
+                class="btn iconfont icon-fold-right"
+                :class="{'icon-fold-left': isFoldEditor}"
+                @click="isFoldEditor = !isFoldEditor">
+            </button>
         </div>
         <!-- 编辑区 -->
-        <div class="editor">
+        <div v-if="status === 'editor' && !isFoldEditor" class="editor">
             <el-input
                 type="textarea"
                 :autosize="{minRows: 55}"
@@ -87,7 +98,11 @@ export default {
             mdHTML: '',
             mdText: '',
             content: '',
-            imgDialogVisible: false
+            // 上传图片弹窗
+            imgDialogVisible: false,
+            isFoldEditor: false,
+            // 状态：preview: 预览状态, editor: 编辑状态
+            status: ''
         };
     },
     watch: {
@@ -100,6 +115,9 @@ export default {
             this.mdText = res.data.mdContent;
             this.mdToHtml();
         });
+
+        this.isFoldEditor = !this.$route.query.isEdit;
+        this.status = this.$route.query.isEdit ? 'editor' : 'preview';
     },
     methods: {
 
@@ -158,11 +176,14 @@ export default {
 <style lang="less">
 .article-detail {
     display: flex;
+    justify-content: center;
     .view,
     .editor {
         flex: 1;
         margin: 5px;
         box-shadow: 2px 3px 5px rgba(0, 0, 0, .1), -2px -3px 5px rgba(0, 0, 0, .1);
+        transition: 'width' 300ms;
+        max-width: 800px;
     }
 
     // markdown 样式部分自定义
@@ -171,6 +192,10 @@ export default {
         h1 {
             border-bottom: none;
             text-align: center;
+        }
+        blockquote {
+            background: #F6F6F6;
+            padding: 10px;
         }
     }
 
@@ -197,10 +222,17 @@ export default {
             box-shadow: 2px 3px 5px rgba(0, 0, 0, .1), -2px -3px 5px rgba(0, 0, 0, .1);
             outline: none;
             cursor: pointer;
+            transition: 300ms;
             &:hover {
                 background: #409EFF;
                 color: #fff;
             }
+        }
+        .icon-fold-left {
+            transform: rotate(180deg);
+        }
+        &.editor-folded {
+            margin-right: -80px;
         }
     }
 }
