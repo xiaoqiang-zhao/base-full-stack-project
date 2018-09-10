@@ -8,6 +8,7 @@ import bluebird from 'bluebird';
 
 import UserModel from './user';
 import ArticleModel from './article';
+import TagModel from './tag';
 import config from '../config.js';
 
 mongoose.Promise = bluebird;
@@ -22,5 +23,6 @@ mongoose.connect(config.db, {
 
 export default {
     UserModel,
-    ArticleModel
+    ArticleModel,
+    TagModel
 };

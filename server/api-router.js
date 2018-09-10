@@ -5,6 +5,7 @@
 
 import {Router} from 'express';
 import article from './api/article';
+import tag from './api/tag';
 import user from './api/user';
 import upload from './api/upload';
 import logger from './logger';
@@ -33,6 +34,13 @@ router.get('/articles/:id', article.getArticleById);
 router.post('/articles', auth.userRequired, article.addArticleItem);
 router.post('/articles/:id', auth.userRequired, article.updateArticleItem);
 router.delete('/articles/:id', auth.userRequired, article.deleteArticleItem);
+
+// tag 相关部分
+router.get('/tags', tag.getTagList);
+router.get('/tags/:id', tag.getTagById);
+router.post('/tags', auth.adminRequired, tag.addTagItem);
+router.post('/tags/:id', auth.adminRequired, tag.updateTagItem);
+router.delete('/tags/:id', auth.adminRequired, tag.deleteTagItem);
 
 // 独立接口
 router.post('/upload', upload);
