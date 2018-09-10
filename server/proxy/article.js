@@ -25,7 +25,7 @@ const articleDefaultMdContent = `# 标题
 export default {
 
     /**
-     * 插入篇文章数据
+     * 插入一篇文章数据
      *
      * @param {Object} req 请求对象
      * @return {Object} 插入后的数据，Promise 对象

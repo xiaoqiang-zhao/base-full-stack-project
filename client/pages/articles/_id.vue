@@ -49,7 +49,7 @@
 </template>
 <script>
 /**
- * @file 文章列表页
+ * @file 文章详情页
  * @author 小强赵
  */
 import message from 'element-ui/lib/message';
