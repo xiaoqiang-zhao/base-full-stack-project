@@ -15,6 +15,7 @@
             :default-active="activeIndex"
             mode="horizontal">
             <el-menu-item index="/articles">文章管理</el-menu-item>
+            <el-menu-item index="/tags">标签管理</el-menu-item>
             <!-- <el-menu-item index="/articles">统计分析</el-menu-item> -->
             <el-menu-item index="/users">用户管理</el-menu-item>
         </el-menu>
@@ -147,17 +148,21 @@ export default {
         // 处理刷新时 menu 选中某个 item
         const map = [
             {
-                paths: ['/users'],
+                names: ['users'],
                 path: '/users'
             },
-            // 首页配置需要放在最后面
             {
-                paths: ['/articles', '/'],
+                names: ['tags', 'tags-id'],
+                path: '/tags'
+            },
+            // 首页(路由为 / )的页面名称是 index
+            {
+                names: ['articles', 'articles-id', 'index'],
                 path: '/articles'
             }
         ];
         map.some(item => {
-            if (item.paths.indexOf(this.$route.path) > -1) {
+            if (item.names.indexOf(this.$route.name) > -1) {
                 this.activeIndex = item.path;
                 return true;
             }
