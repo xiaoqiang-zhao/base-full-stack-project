@@ -17,7 +17,7 @@ export default {
      */
     async addTagItem(form) {
         // 格式校验
-        let validResult = await this.validate(form);
+        let validResult = await this.validate(form, false);
 
         if (!validResult.valid) {
             return Promise.reject({
@@ -38,11 +38,13 @@ export default {
      * 校验 tag 数据
      *
      * @param {Object} form 用户提交表单
+     * @param {boolean} isUpdate 是否是跟新，更新时检验 tag 重名的逻辑和新建有区别
+     * @param {string} tagId 只有 isUpdate 为 true 时需要且必要
      * @return {Object} 验证结果
      *                  .valid 值为 false 失败，.statusInfo 失败信息
      *                  .valid 值为 true 检验成功
      */
-    async validate(form) {
+    async validate(form, isUpdate, tagId) {
         // 格式校验
         let valid = true;
         let statusInfo;
@@ -52,10 +54,18 @@ export default {
         }
 
         // 重名校验
-        const tags = await this.getTagByKV('text', form.text);
-        if (tags) {
-            valid = false;
-            statusInfo = `Tag “${form.text}”已存在`;
+        const tag = await this.getTagByKV('text', form.text);
+        if (tag) {
+            // 更新
+            if (isUpdate && tagId !== tag.id) {
+                valid = false;
+                statusInfo = `Tag “${form.text}”已存在`;
+            }
+            // 新建
+            else if (isUpdate === false) {
+                valid = false;
+                statusInfo = `Tag “${form.text}”已存在`;
+            }
         }
 
         const result = {
@@ -89,7 +99,7 @@ export default {
      */
     async updateTagItem(id, tag) {
         // 格式校验
-        let validResult = await this.validate(tag);
+        let validResult = await this.validate(tag, true, id);
 
         if (!validResult.valid) {
             return Promise.reject({
