@@ -8,8 +8,7 @@
                     v-for="item in tags"
                     v-if="item.isSelected"
                     class="item"
-                    :class="{selected: item.isSelected}"
-                    @click="item.isSelected = !item.isSelected">
+                    :class="{selected: item.isSelected}">
                     {{item.text}}
                 </span>
                 <span

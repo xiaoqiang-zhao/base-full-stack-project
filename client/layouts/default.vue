@@ -31,9 +31,9 @@ export default {
 <style lang="less">
 .page-root {
     position: relative;
-    padding-bottom: 20px;
+    min-height: 100vh;
 }
 .container {
-    padding: 5px;
+    padding: 5px 5px 20px 5px;
 }
 </style>
