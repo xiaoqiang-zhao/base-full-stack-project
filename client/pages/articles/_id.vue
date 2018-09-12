@@ -1,8 +1,24 @@
 <template>
     <section class="container article-detail">
         <!-- 展示区 -->
-        <div class="view markdown-body" v-html="mdHTML">
-            预览
+        <div class="view markdown-body">
+            <h1>{{title}}</h1>
+            <div class="tags">
+                <span
+                    v-for="item in tags"
+                    v-if="item.isSelected"
+                    class="item"
+                    :class="{selected: item.isSelected}"
+                    @click="item.isSelected = !item.isSelected">
+                    {{item.text}}
+                </span>
+                <span
+                    v-if="status === 'editor'"
+                    class="item selected iconfont icon-setting"
+                    @click="tagDialogVisible = true">
+                </span>
+            </div>
+            <div v-html="mdHTML"></div>
         </div>
         <!-- 中间 按钮区 -->
         <div v-if="status === 'editor'" class="middle" :class="{'editor-folded': isFoldEditor}">
@@ -44,6 +60,19 @@
                 <el-button size="small" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
             </el-upload>
+        </el-dialog>
+        <el-dialog
+            :visible.sync="tagDialogVisible"
+            title="编辑标签">
+            <div class="tags">
+                <span
+                    v-for="item in tags"
+                    class="item"
+                    :class="{selected: item.isSelected}"
+                    @click="item.isSelected = !item.isSelected">
+                    {{item.text}}
+                </span>
+            </div>
         </el-dialog>
     </section>
 </template>
@@ -97,7 +126,9 @@ export default {
         return {
             mdHTML: '',
             mdText: '',
-            content: '',
+            title: '',
+            tags: [],
+            tagDialogVisible: false,
             // 上传图片弹窗
             imgDialogVisible: false,
             isFoldEditor: false,
@@ -112,6 +143,8 @@ export default {
     },
     mounted() {
         axios.get(`/api/articles/${this.$route.params.id}`).then(res => {
+            this.title = res.data.title;
+            this.mergeTags(res.data.tags);
             this.mdText = res.data.mdContent;
             this.mdToHtml();
         });
@@ -120,6 +153,31 @@ export default {
         this.status = this.$route.query.isEdit ? 'editor' : 'preview';
     },
     methods: {
+
+        mergeTags(tags) {
+            const extendTags = [];
+            if (this.status === 'preview') {
+                tags.forEach(element => {
+                    extendTags.push({
+                        text: element,
+                        isSelected: true
+                    });
+                });
+                this.tags = extendTags;
+            }
+            else {
+                axios.get('/api/tags').then(res => {
+                    this.tags = res.data.tags;
+                    res.data.forEach(element => {
+                        extendTags.push({
+                            text: element.text,
+                            isSelected: tags.indexOf(element.text) > -1
+                        });
+                    });
+                    this.tags = extendTags;
+                });
+            }
+        },
 
         /**
          * 将 markdown 转为 html
@@ -140,8 +198,15 @@ export default {
          * 更新文章内容
          */
         updateArticle() {
+            const tags = [];
+            this.tags.forEach(element => {
+                if (element.isSelected) {
+                    tags.push(element.text);
+                }
+            });
             axios.post(`/api/articles/${this.$route.params.id}`, {
-                mdContent: this.mdText
+                mdContent: this.mdText,
+                tags
             }).then(res => {
                 message({
                     type: 'success',
@@ -193,6 +258,10 @@ export default {
             border-bottom: none;
             text-align: center;
         }
+        // 隐藏原有 title，手动添加 title，再在 title 下写入 tag
+        > div > h1 {
+            display: none;
+        }
         blockquote {
             background: #F6F6F6;
             padding: 10px;
@@ -233,6 +302,26 @@ export default {
         }
         &.editor-folded {
             margin-right: -80px;
+        }
+    }
+
+    .tags {
+        padding-bottom: 6px;
+        .item {
+            display: inline-block;
+            padding: 0 6px;
+            margin: 0 6px 6px 0;
+            background: #b1b3b3;
+            color: #1e1e1e;
+            height: 22px;
+            line-height: 22px;
+            font-weight: normal;
+            font-size: 13px;
+            cursor: pointer;
+            &.selected {
+                color: #017E66;
+                background-color: rgba(1,126,102,0.08);
+            }
         }
     }
 }

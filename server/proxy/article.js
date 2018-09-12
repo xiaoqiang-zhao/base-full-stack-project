@@ -81,6 +81,8 @@ export default {
             statusInfo = '描述不可为空';
         }
 
+        articleObj.tags = article.tags || [];
+
         if (!valid) {
             return Promise.reject({
                 statusInfo

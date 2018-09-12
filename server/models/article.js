@@ -8,6 +8,8 @@ const Schema = mongoose.Schema;
 const articleSchema = new Schema({
     // 标题
     title: {type: String},
+    // 标签
+    tags: {type: Array},
     // 描述
     description: {type: String},
     // markdown 内容
