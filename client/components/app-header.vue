@@ -46,15 +46,12 @@
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
                 <el-form-item label="密码:" prop="name">
-                    <el-input v-model="form.pwd"></el-input>
+                    <el-input type="password" v-model="form.pwd"></el-input>
                 </el-form-item>
             </el-form>
             <section slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">
-                    取 消
-                </el-button>
                 <el-button type="primary" @click="signin">
-                    确 定
+                    登 录
                 </el-button>
             </section>
         </el-dialog>
