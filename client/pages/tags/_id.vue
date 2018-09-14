@@ -30,9 +30,7 @@
 import message from 'element-ui/lib/message';
 import 'element-ui/lib/theme-chalk/message.css';
 
-import 'element-ui/lib/theme-chalk/icon.css';
 import elButton from 'element-ui/lib/button';
-import 'element-ui/lib/theme-chalk/button.css';
 import elForm from 'element-ui/lib/form';
 import 'element-ui/lib/theme-chalk/form.css';
 import elFormItem from 'element-ui/lib/form-item';

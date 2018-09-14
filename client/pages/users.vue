@@ -68,9 +68,7 @@
 import elTable from 'element-ui/lib/table';
 import elTableColumn from 'element-ui/lib/table-column';
 import 'element-ui/lib/theme-default/table.css';
-import 'element-ui/lib/theme-chalk/icon.css';
 import elButton from 'element-ui/lib/button';
-import 'element-ui/lib/theme-chalk/button.css';
 import messageBox from 'element-ui/lib/message-box';
 import 'element-ui/lib/theme-chalk/message-box.css';
 import message from 'element-ui/lib/message';

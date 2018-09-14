@@ -39,11 +39,9 @@
 <script>
 import elUpload from 'element-ui/lib/upload';
 import 'element-ui/lib/theme-chalk/upload.css';
-import 'element-ui/lib/theme-chalk/icon.css';
 import elDialog from 'element-ui/lib/dialog';
 import 'element-ui/lib/theme-chalk/dialog.css';
 import elButton from 'element-ui/lib/button';
-import 'element-ui/lib/theme-chalk/button.css';
 
 export default {
     components: {
