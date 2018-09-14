@@ -50,6 +50,30 @@ status: -1, 需要登录后才能访问接口；
 
 status: -2, 需要管理员权限才能访问接口。
 
+### base-model
+
+数据有一些通用的操作写进了 server/modules/base-model，当前包括新建时间和更新时间：
+
+```js
+// 新建时，创建时间和更新时间相同
+schema.pre('save', function (next) {
+    const date = new Date().getTime().toString();
+    this.createDate = date;
+    this.updateDate = date;
+    next();
+});
+// 更新时，更新 updateDate 字段
+schema.pre('updateOne', function (next) {
+    const date = new Date().getTime().toString();
+    this.updateOne({}, {
+        $set: {
+            updateDate: date
+        }
+    });
+    next();
+});
+```
+
 ### assets 和 static
 
 在 `*.vue` 组件中，所有模板和 CSS 都会被 `vue-html-loader` 及 `css-loader` 解析，并查找资源URL。例如，在 `<img src="./logo.png">`
@@ -178,3 +202,5 @@ axios.post('/api/users', form, {
     "data": {}
 }
 ```
+
+更多 API 请参考 server/api-router。
