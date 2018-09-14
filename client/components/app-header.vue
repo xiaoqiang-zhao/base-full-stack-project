@@ -63,15 +63,9 @@
  * @author 小强赵
  */
 
-import 'element-ui/lib/theme-chalk/icon.css';
-
 import elMenu from 'element-ui/lib/menu';
-import 'element-ui/lib/theme-chalk/menu.css';
 import elMenuItem from 'element-ui/lib/menu-item';
-import 'element-ui/lib/theme-chalk/menu-item.css';
-
 import elButton from 'element-ui/lib/button';
-import 'element-ui/lib/theme-chalk/button.css';
 
 import elDialog from 'element-ui/lib/dialog';
 import 'element-ui/lib/theme-chalk/dialog.css';
@@ -172,6 +166,7 @@ export default {
             if (res.data) {
                 this.dialogVisible = false;
                 this.setCurrentUser(res.data);
+                window.location.reload();
             }
             // 登录失败
             else {
@@ -189,6 +184,7 @@ export default {
                 // 退出
                 axios.post('/api/users/signout').then(() => {
                     this.setCurrentUser(null);
+                    window.location.reload();
                 });
             }
             else {
