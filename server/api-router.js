@@ -20,7 +20,7 @@ router.all('/*', (req, res, next) => {
 
 // 用户相关部分
 router.get('/users', auth.adminRequired, user.getUserList);
-router.get('/users/current', auth.userRequired, user.getCurrentUser);
+router.get('/users/current', user.getCurrentUser);
 router.delete('/users/:id', auth.adminRequired, user.deleteUserItem);
 router.post('/users/:id/pwd', auth.adminRequired, user.updateUserPassword);
 router.post('/users', auth.adminRequired, user.addUserItem);

@@ -49,7 +49,7 @@ export default {
     },
 
     /**
-     * 获取当前用户信息
+     * 获取当前用户信息，如果用户未登录 currentUser 为 null
      *
      * @param {Object} req 请求
      * @param {Object} res 返回

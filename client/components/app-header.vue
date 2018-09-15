@@ -15,9 +15,9 @@
             :default-active="activeIndex"
             mode="horizontal">
             <el-menu-item index="/articles">文章管理</el-menu-item>
-            <el-menu-item index="/tags">标签管理</el-menu-item>
+            <el-menu-item v-if="isRoot" index="/tags">标签管理</el-menu-item>
             <!-- <el-menu-item index="/articles">统计分析</el-menu-item> -->
-            <el-menu-item index="/users">用户管理</el-menu-item>
+            <el-menu-item v-if="isRoot" index="/users">用户管理</el-menu-item>
         </el-menu>
 
         <!-- 用户部分 -->
@@ -104,6 +104,7 @@ export default {
     },
     data() {
         return {
+            isRoot: false,
             activeIndex: '/articles',
             dialogVisible: false,
             form: {
@@ -133,6 +134,13 @@ export default {
             const currentUser = res.data;
             if (currentUser) {
                 this.setCurrentUser(currentUser);
+                if (currentUser.name === 'root') {
+                    this.isRoot = true;
+                }
+            }
+            // 弹登录框
+            else {
+                this.dialogVisible = true;
             }
         });
 
