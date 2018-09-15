@@ -22,6 +22,7 @@ router.all('/*', (req, res, next) => {
 router.get('/users', auth.adminRequired, user.getUserList);
 router.get('/users/current', auth.userRequired, user.getCurrentUser);
 router.delete('/users/:id', auth.adminRequired, user.deleteUserItem);
+router.post('/users/:id/pwd', auth.adminRequired, user.updateUserPassword);
 router.post('/users', auth.adminRequired, user.addUserItem);
 router.post('/users/signin', user.signin);
 router.post('/users/signout', user.signout);

@@ -120,6 +120,27 @@ export default {
                 ...err
             });
         });
+    },
+
+    /**
+     * 按 ID 更新某个用户的密码
+     *
+     * @param {Object} req 请求
+     * @param {Object} res 返回
+     */
+    updateUserPassword(req, res) {
+        user.updateUserPassword(req.params.id, req.body).then(data => {
+            res.send({
+                status: 0,
+                statusInfo: '',
+                data
+            });
+        }, err => {
+            res.send({
+                status: 1,
+                ...err
+            });
+        });
     }
 
     /**

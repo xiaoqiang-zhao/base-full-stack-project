@@ -179,5 +179,43 @@ export default {
         // 对象
         const userModel = new UserModel(user);
         return userModel.save();
+    },
+
+    /**
+     * 通过 ID 更新用户密码
+     *
+     * @param {string} id 用户 ID
+     * @param {Object} form 用户表单
+     * @return {Object} 数据删除操作结果，Promise 对象
+     */
+    async updateUserPassword(id, form) {
+        // 数据校验
+        let valid = true;
+        let statusInfo;
+        if (form.pwd === '') {
+            valid = false;
+            statusInfo = '密码不可为空';
+        }
+
+        const users = await UserModel.find({
+            _id: id  // eslint-disable-line
+        });
+
+        if (users.length === 0) {
+            valid = false;
+            statusInfo = '用户未找到';
+        }
+
+        if (!valid) {
+            return Promise.reject({
+                statusInfo
+            });
+        }
+
+        return UserModel.updateOne({
+            _id: id // eslint-disable-line
+        }, {
+            pwd: utiles.md5(form.pwd)
+        });
     }
 };

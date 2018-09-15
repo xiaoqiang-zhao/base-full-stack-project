@@ -5,7 +5,7 @@
             <el-button
                 type="primary"
                 icon="el-icon-circle-plus-outline"
-                @click="dialogVisible = true">
+                @click="addUserDialogVisible = true">
                 新增用户
             </el-button>
         </header>
@@ -30,31 +30,54 @@
             </el-table-column>
             <el-table-column
                 label="操作"
-                width="100">
+                width="125">
                 <template slot-scope="scope">
                     <el-button @click="deleteUser(scope.row)" type="text" size="small">删除</el-button>
+                    <el-button @click="changePassword(scope.row)" type="text" size="small">修改密码</el-button>
                 </template>
             </el-table-column>
         </el-table>
         <!-- 添加用户的弹框 -->
         <el-dialog
             title="添加用户"
-            :visible.sync="dialogVisible"
-            width="500px">
+            :visible.sync="addUserDialogVisible"
+            width="500px"
+            autocomplete="off">
             <el-form ref="form" :model="form" :rules="formRules" label-width="95px">
                 <el-form-item label="用户名:" prop="name">
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
                 <el-form-item label="密码:" prop="pwd">
-                    <el-input v-model="form.pwd"></el-input>
+                    <el-input v-model="form.pwd" type="password"></el-input>
                 </el-form-item>
             </el-form>
             <section slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">
-                    取 消
-                </el-button>
                 <el-button type="primary" @click="addUser">
-                    确 定
+                    添 加
+                </el-button>
+            </section>
+        </el-dialog>
+        <!-- 修改用户密码弹框 -->
+        <el-dialog
+            title="修改用户密码"
+            :visible.sync="changePasswordDialogVisible"
+            width="500px">
+            <el-form
+                ref="changePasswordForm"
+                :model="changePasswordForm"
+                :rules="changePasswordFormRules"
+                label-width="95px"
+                autocomplete="off">
+                <el-form-item label="用户名:">
+                    <el-input v-model="changePasswordForm.name" disabled></el-input>
+                </el-form-item>
+                <el-form-item label="密码:" prop="pwd">
+                    <el-input v-model="changePasswordForm.pwd" type="password"></el-input>
+                </el-form-item>
+            </el-form>
+            <section slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="submitChangePassword">
+                    修 改
                 </el-button>
             </section>
         </el-dialog>
@@ -110,7 +133,8 @@ export default {
     },
     data() {
         return {
-            dialogVisible: false,
+            addUserDialogVisible: false,
+            changePasswordDialogVisible: false,
             form: {
                 name: '',
                 pwd: ''
@@ -123,6 +147,20 @@ export default {
                         trigger: 'blur'
                     }
                 ],
+                pwd: [
+                    {
+                        required: true,
+                        message: '必填项',
+                        trigger: 'blur'
+                    }
+                ]
+            },
+            changePasswordForm: {
+                id: '',
+                name: '',
+                pwd: ''
+            },
+            changePasswordFormRules: {
                 pwd: [
                     {
                         required: true,
@@ -179,12 +217,47 @@ export default {
          */
         requestAddUser(form) {
             axios.post('/api/users', form).then(res => {
-                this.dialogVisible = false;
+                this.addUserDialogVisible = false;
                 message({
                     type: 'success',
                     message: '添加成功'
                 });
                 this.tableData.push(res.data);
+                this.form.name = '';
+                this.form.pwd = '';
+            });
+        },
+
+        /**
+         * 更新用户密码
+         *
+         * @param {Object} userItem 一条用户数据
+         */
+        changePassword(userItem) {
+            this.changePasswordDialogVisible = true;
+            this.changePasswordForm.id = userItem._id;
+            this.changePasswordForm.name = userItem.name;
+        },
+
+        /**
+         * 提交密码修改
+         */
+        submitChangePassword() {
+            this.$refs.changePasswordForm.validate(valid => {
+                // 检验不通过
+                if (!valid) {
+                    return false;
+                }
+
+                axios.post(`/api/users/${this.changePasswordForm.id}/pwd`, {
+                    pwd: this.changePasswordForm.pwd
+                }).then(res => {
+                    this.changePasswordDialogVisible = false;
+                    message({
+                        type: 'success',
+                        message: '添加成功'
+                    });
+                });
             });
         },
 
