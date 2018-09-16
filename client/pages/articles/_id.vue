@@ -147,7 +147,7 @@ export default {
         });
 
         this.isFoldEditor = !this.$route.query.isEdit;
-        this.status = this.$route.query.isEdit ? 'editor' : 'preview';
+        this.status = +this.$route.query.isEdit ? 'editor' : 'preview';
     },
     methods: {
 
