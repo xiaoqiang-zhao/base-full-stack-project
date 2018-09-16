@@ -123,13 +123,34 @@ export default {
     },
 
     /**
-     * 按 ID 更新某个用户的密码
+     * 按 ID 更新某个用户的密码 (root 用户不需要提供原密码)
      *
      * @param {Object} req 请求
      * @param {Object} res 返回
      */
     updateUserPassword(req, res) {
         user.updateUserPassword(req.params.id, req.body).then(data => {
+            res.send({
+                status: 0,
+                statusInfo: '',
+                data
+            });
+        }, err => {
+            res.send({
+                status: 1,
+                ...err
+            });
+        });
+    },
+
+    /**
+     * 按当前用户的密码 (需要提供原密码)
+     *
+     * @param {Object} req 请求
+     * @param {Object} res 返回
+     */
+    updateCurrentUserPassword(req, res) {
+        user.updateCurrentUserPassword(req).then(data => {
             res.send({
                 status: 0,
                 statusInfo: '',

@@ -249,7 +249,7 @@ export default {
                     return false;
                 }
 
-                axios.post(`/api/users/${this.changePasswordForm.id}/pwd`, {
+                axios.post(`/users/root-user/change-pwd/${this.changePasswordForm.id}`, {
                     pwd: this.changePasswordForm.pwd
                 }).then(res => {
                     this.changePasswordDialogVisible = false;

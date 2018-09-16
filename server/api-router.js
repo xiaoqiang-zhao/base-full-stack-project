@@ -22,7 +22,10 @@ router.all('/*', (req, res, next) => {
 router.get('/users', auth.adminRequired, user.getUserList);
 router.get('/users/current', user.getCurrentUser);
 router.delete('/users/:id', auth.adminRequired, user.deleteUserItem);
-router.post('/users/:id/pwd', auth.adminRequired, user.updateUserPassword);
+// root 用户修改密码
+router.post('/users/root-user/change-pwd/:id', auth.adminRequired, user.updateUserPassword);
+// 当前登录用户修改密码
+router.post('/users/current-user/change-pwd', auth.userRequired, user.updateCurrentUserPassword);
 router.post('/users', auth.adminRequired, user.addUserItem);
 router.post('/users/signin', user.signin);
 router.post('/users/signout', user.signout);

@@ -27,18 +27,18 @@
                     {{currentUser.name}}<i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item command="jump">个人中心</el-dropdown-item>
+                    <el-dropdown-item command="changePwd">修改密码</el-dropdown-item>
                     <el-dropdown-item command="signout" divided>退出</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
         </div>
-        <span v-else class="btn-signin" @click="dialogVisible = true">登录</span>
+        <span v-else class="btn-signin" @click="siginDialogVisible = true">登录</span>
 
         <!-- 登录弹框 -->
         <el-dialog
             custom-class="signin-dialog"
             title="登录"
-            :visible.sync="dialogVisible"
+            :visible.sync="siginDialogVisible"
             :append-to-body="true"
             width="500px">
             <el-form ref="form" :model="form" :rules="formRules" label-width="95px">
@@ -52,6 +52,35 @@
             <section slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="signin">
                     登 录
+                </el-button>
+            </section>
+        </el-dialog>
+
+        <!-- 修改当前用户密码弹框 -->
+        <el-dialog
+            title="修改用户密码"
+            :visible.sync="changePasswordDialogVisible"
+            :append-to-body="true"
+            width="500px">
+            <el-form
+                ref="changePasswordForm"
+                :model="changePasswordForm"
+                :rules="changePasswordFormRules"
+                label-width="95px"
+                autocomplete="off">
+                <!-- <el-form-item label="用户名:">
+                    <el-input v-model="currentUser || currentUser.name" disabled></el-input>
+                </el-form-item> -->
+                <el-form-item label="原密码:" prop="oldPwd">
+                    <el-input v-model="changePasswordForm.oldPwd" type="password"></el-input>
+                </el-form-item>
+                <el-form-item label="新密码:" prop="newPwd">
+                    <el-input v-model="changePasswordForm.newPwd" type="password"></el-input>
+                </el-form-item>
+            </el-form>
+            <section slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="submitChangePassword">
+                    修 改
                 </el-button>
             </section>
         </el-dialog>
@@ -106,7 +135,7 @@ export default {
         return {
             isRoot: false,
             activeIndex: '/articles',
-            dialogVisible: false,
+            siginDialogVisible: false,
             form: {
                 name: '',
                 pwd: ''
@@ -123,7 +152,29 @@ export default {
                     trigger: 'blur'
                 }]
             },
-            currentUser: null
+            currentUser: null,
+            changePasswordDialogVisible: false,
+            changePasswordForm: {
+                id: '',
+                oldPwd: '',
+                newPwd: ''
+            },
+            changePasswordFormRules: {
+                oldPwd: [
+                    {
+                        required: true,
+                        message: '必填项',
+                        trigger: 'blur'
+                    }
+                ],
+                newPwd: [
+                    {
+                        required: true,
+                        message: '必填项',
+                        trigger: 'blur'
+                    }
+                ]
+            }
         };
     },
     mounted() {
@@ -134,13 +185,14 @@ export default {
             const currentUser = res.data;
             if (currentUser) {
                 this.setCurrentUser(currentUser);
+                this.changePasswordForm.id = res.data._id;
                 if (currentUser.name === 'root') {
                     this.isRoot = true;
                 }
             }
             // 弹登录框
             else {
-                this.dialogVisible = true;
+                this.siginDialogVisible = true;
             }
         });
 
@@ -172,7 +224,7 @@ export default {
             const res = await axios.post('/api/users/signin', this.form);
             // 登录成功
             if (res.data) {
-                this.dialogVisible = false;
+                this.siginDialogVisible = false;
                 this.setCurrentUser(res.data);
                 window.location.reload();
             }
@@ -188,18 +240,39 @@ export default {
             this.currentUser = currentUser;
         },
         handleCommand(command) {
+            // 退出
             if (command === 'signout') {
-                // 退出
                 axios.post('/api/users/signout').then(() => {
                     this.setCurrentUser(null);
                     window.location.reload();
                 });
             }
+            // 修改密码
             else {
-                this.$router.push({
-                    path: '/personal-center'
-                });
+                // this.$router.push({
+                //     path: '/personal-center'
+                // });
+                this.changePasswordDialogVisible = true;
             }
+        },
+        submitChangePassword() {
+            this.$refs.changePasswordForm.validate(valid => {
+                // 检验不通过
+                if (!valid) {
+                    return false;
+                }
+
+                axios.post('/api/users/current-user/change-pwd', {
+                    oldPwd: this.changePasswordForm.oldPwd,
+                    newPwd: this.changePasswordForm.newPwd
+                }).then(res => {
+                    this.changePasswordDialogVisible = false;
+                    message({
+                        type: 'success',
+                        message: '添加成功'
+                    });
+                });
+            });
         }
     }
 };

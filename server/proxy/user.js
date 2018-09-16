@@ -81,11 +81,13 @@ export default {
      * 获取当前用户
      *
      * @param {Object} req 请求对象
+     * @param {boolean} needPwd 是否需要返回密码
      * @return {Object} user 当前用户对象，未登录返回 null
      */
-    async getCurrentUser(req) {
+    async getCurrentUser(req, needPwd) {
         const token = req.signedCookies[config.authCookieName];
         let user;
+        let userData;
         if (token === undefined) {
             user = null;
         }
@@ -93,15 +95,19 @@ export default {
             const users = await UserModel.find({
                 _id: token // eslint-disable-line
             });
-            user = users.length ? users[0] : null;
+            userData = users.length ? users[0] : null;
         }
 
         // 去无用字段(加密后的密码不能直接返回)
-        if (user) {
+        if (userData) {
             user = {
-                name: user.name,
-                _id: user._id // eslint-disable-line
+                name: userData.name,
+                _id: userData._id // eslint-disable-line
             };
+        }
+
+        if (needPwd) {
+            user.pwd = userData.pwd;
         }
 
         return user;
@@ -216,6 +222,47 @@ export default {
             _id: id // eslint-disable-line
         }, {
             pwd: utiles.md5(form.pwd)
+        });
+    },
+
+
+    /**
+     * 更新当前登录用户密码
+     *
+     * @param {Object} req 请求
+     * @return {Object} 数据删除操作结果，Promise 对象
+     */
+    async updateCurrentUserPassword(req) {
+        const form = req.body;
+        // 数据校验
+        let valid = true;
+        let statusInfo;
+        if (form.oldPwd === '') {
+            valid = false;
+            statusInfo = '原密码不可为空';
+        }
+
+        if (form.newPwd === '') {
+            valid = false;
+            statusInfo = '新密码不可为空';
+        }
+
+        const currentUser = await this.getCurrentUser(req, true);
+        if (currentUser.pwd !== utiles.md5(form.oldPwd)) {
+            valid = false;
+            statusInfo = '原密码错误';
+        }
+
+        if (!valid) {
+            return Promise.reject({
+                statusInfo
+            });
+        }
+
+        return UserModel.updateOne({
+            _id: currentUser._id // eslint-disable-line
+        }, {
+            pwd: utiles.md5(form.newPwd)
         });
     }
 };
