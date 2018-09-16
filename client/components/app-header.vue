@@ -194,32 +194,37 @@ export default {
             else {
                 this.siginDialogVisible = true;
             }
-        });
 
-        // 处理刷新时 menu 选中某个 item
-        const map = [
-            {
-                names: ['users'],
-                path: '/users'
-            },
-            {
-                names: ['tags', 'tags-id'],
-                path: '/tags'
-            },
-            // 首页(路由为 / )的页面名称是 index
-            {
-                names: ['articles', 'articles-id', 'index'],
-                path: '/articles'
-            }
-        ];
-        map.some(item => {
-            if (item.names.indexOf(this.$route.name) > -1) {
-                this.activeIndex = item.path;
-                return true;
-            }
+            this.$nextTick(() => {
+                this.setActiveIndex();
+            });
         });
     },
     methods: {
+        setActiveIndex() {
+            // 处理刷新时 menu 选中某个 item
+            const map = [
+                {
+                    names: ['users'],
+                    path: '/users'
+                },
+                {
+                    names: ['tags', 'tags-id'],
+                    path: '/tags'
+                },
+                // 首页(路由为 / )的页面名称是 index
+                {
+                    names: ['articles', 'articles-id', 'index'],
+                    path: '/articles'
+                }
+            ];
+            map.some(item => {
+                if (item.names.indexOf(this.$route.name) > -1) {
+                    this.activeIndex = item.path;
+                    return true;
+                }
+            });
+        },
         async signin() {
             const res = await axios.post('/api/users/signin', this.form);
             // 登录成功
@@ -249,9 +254,6 @@ export default {
             }
             // 修改密码
             else {
-                // this.$router.push({
-                //     path: '/personal-center'
-                // });
                 this.changePasswordDialogVisible = true;
             }
         },
