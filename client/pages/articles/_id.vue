@@ -148,6 +148,7 @@ export default {
 
         this.isFoldEditor = !this.$route.query.isEdit;
         this.status = +this.$route.query.isEdit ? 'editor' : 'preview';
+        // 参数 this.$route.query.isEdit 的值刷新后会成为 string，这里用加号强制转成 number
     },
     methods: {
 
