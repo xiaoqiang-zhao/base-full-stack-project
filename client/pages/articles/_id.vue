@@ -3,7 +3,7 @@
         <!-- 展示区 -->
         <div class="view markdown-body">
             <h1>{{title}}</h1>
-            <div class="tags">
+            <div class="tags date">
                 <span
                     v-for="item in tags"
                     v-if="item.isSelected"
@@ -16,6 +16,7 @@
                     class="item selected iconfont icon-setting"
                     @click="tagDialogVisible = true">
                 </span>
+                <span class="date-text">{{createDate}}</span>
             </div>
             <div v-html="mdHTML"></div>
         </div>
@@ -107,6 +108,7 @@ import 'highlight.js/styles/solarized-light.css';
 import 'github-markdown-css/github-markdown.css';
 
 import axios from '@/../plugins/axios';
+import utiles from '@/../utiles';
 
 export default {
     components: {
@@ -124,6 +126,8 @@ export default {
             mdHTML: '',
             mdText: '',
             title: '',
+            // 文章创建时间
+            createDate: '',
             tags: [],
             tagDialogVisible: false,
             // 上传图片弹窗
@@ -141,6 +145,7 @@ export default {
     mounted() {
         axios.get(`/api/articles/${this.$route.params.id}`).then(res => {
             this.title = res.data.title;
+            this.createDate = utiles.formatDate(res.data.createDate, true);
             this.mergeTags(res.data.tags);
             this.mdText = res.data.mdContent;
             this.mdToHtml();
@@ -305,6 +310,7 @@ export default {
 
     .tags {
         padding-bottom: 6px;
+        font-size: 13px;
         .item {
             display: inline-block;
             padding: 0 6px;
@@ -314,12 +320,15 @@ export default {
             height: 22px;
             line-height: 22px;
             font-weight: normal;
-            font-size: 13px;
             cursor: pointer;
             &.selected {
                 color: #017E66;
                 background-color: rgba(1,126,102,0.08);
             }
+        }
+        .date-text {
+            float: right;
+            color: #909399;
         }
     }
 }
