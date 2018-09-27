@@ -194,6 +194,11 @@ export default {
                 .use(highlight)
                 .process(this.mdText, (err, file) => {
                     me.mdHTML = file.contents;
+                    // 提取标题
+                    me.mdHTML.replace(/<h1>(.+)<\/h1>/, (matchStr, $1) => {
+                        this.title = $1;
+                        return $1;
+                    });
                 });
         },
 
