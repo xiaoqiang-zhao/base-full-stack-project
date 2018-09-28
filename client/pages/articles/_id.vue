@@ -257,11 +257,12 @@ export default {
         box-shadow: 2px 3px 5px rgba(0, 0, 0, .1), -2px -3px 5px rgba(0, 0, 0, .1);
         transition: 'width' 300ms;
         max-width: 800px;
+        overflow: auto;
     }
 
     // markdown 样式部分自定义
     .markdown-body {
-        padding: 10px;
+        padding: 10px 20px;
         h1 {
             border-bottom: none;
             text-align: center;
