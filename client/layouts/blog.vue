@@ -1,8 +1,8 @@
 <template>
     <div class="page-root">
-        <div>blog header</div>
+        <!-- <div>blog header</div> -->
         <nuxt to="/articles"></nuxt>
-        <app-footer></app-footer>
+        <!-- <app-footer></app-footer> -->
     </div>
 </template>
 
