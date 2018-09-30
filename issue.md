@@ -91,7 +91,8 @@ export default function (req, res, next) {
 
     // 静态资源和 API不需要设置 coolie，其实只有 asyncData 方法中调用接口前需要预置 cookie
     // (页面请求为接口请求预置 cookie)
-    if (!isMatched) {
+    // 未登录状态下设置 common cookie 会有问题
+    if (!isMatched && req.headers.cookie) {
         axios.defaults.headers.common.cookie = req.headers.cookie;
     }
 

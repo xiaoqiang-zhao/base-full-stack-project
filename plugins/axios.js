@@ -48,7 +48,7 @@ $http.interceptors.response.use(res => {
             return Promise.reject(data);
     }
 }, err => {
-    if (err.config.axiosSystemErrorMessage) {
+    if (err.config && err.config.axiosSystemErrorMessage) {
         switch (err.response.status) {
             case 404:
                 err.statusInfo = '接口未定义';
