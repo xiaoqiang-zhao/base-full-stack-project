@@ -1,21 +1,21 @@
 <template>
-    <section class="container article-list">
+    <section class="container tag-list">
         <!-- 头部按钮行 -->
         <header class="button-line">
             <el-button
                 type="primary"
                 icon="el-icon-circle-plus-outline"
-                @click="toArticleDetail(null, 1)">
-                新增文章
+                @click="toTagDetail(null, 1)">
+                新增Tag
             </el-button>
         </header>
-        <!-- 文章列表 -->
+        <!-- 标签列表 -->
         <el-table
             :data="tableData"
             style="width: 100%">
             <el-table-column
-                label="文章标题"
-                prop="title">
+                label="标签名称"
+                prop="text">
             </el-table-column>
             <el-table-column
                 label="创建时间"
@@ -33,9 +33,9 @@
                 label="操作"
                 width="150">
                 <template slot-scope="scope">
-                    <el-button @click="deleteArticle(scope.row)" type="text" size="small">删除</el-button>
-                    <el-button @click="toArticleDetail(scope.row._id, 1)" type="text" size="small">编辑</el-button>
-                    <el-button @click="toArticleDetail(scope.row._id, 0)" type="text" size="small">查看</el-button>
+                    <el-button @click="deleteTag(scope.row)" type="text" size="small">删除</el-button>
+                    <el-button @click="toTagDetail(scope.row._id, 1)" type="text" size="small">编辑</el-button>
+                    <el-button @click="toTagDetail(scope.row._id, 0)" type="text" size="small">查看</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -43,7 +43,7 @@
 </template>
 <script>
 /**
- * @file 文章列表页
+ * @file 标签列表页
  * @author 小强赵
  */
 import elTable from 'element-ui/lib/table';
@@ -54,8 +54,6 @@ import messageBox from 'element-ui/lib/message-box';
 import 'element-ui/lib/theme-chalk/message-box.css';
 import message from 'element-ui/lib/message';
 import 'element-ui/lib/theme-chalk/message.css';
-import loading from 'element-ui/lib/loading';
-import 'element-ui/lib/theme-chalk/loading.css';
 
 import axios from '@/../plugins/axios';
 import utiles from '@/../utiles';
@@ -67,16 +65,10 @@ export default {
         elTableColumn,
         elButton
     },
-    props: {
-        indexTableData: {
-            'type': Array,
-            'default': () => []
-        }
-    },
     async asyncData() {
         let tableData;
         try {
-            const res = await axios.get('/api/articles');
+            const res = await axios.get('/api/tags');
             tableData = res.data;
         }
         catch (e) {
@@ -88,66 +80,45 @@ export default {
         };
     },
     data() {
-        let tableData = [];
-        if (this.indexTableData.length > 0) {
-            tableData = this.indexTableData;
-        }
         return {
-            tableData
+            tableData: []
         };
     },
     methods: {
 
         /**
-         * 到文章详情页
+         * 到标签详情页
          *
-         * @param {string} id 文章 ID，新建时 ID 为 null
-         * @param {number} isEdit 是否可编辑，0: 不可编辑只展示，1: 可编辑包括添加新文章
+         * @param {string} id 标签 ID，新建时 ID 为 null
+         * @param {number} isEdit 是否可编辑，0: 不可编辑只展示，1: 可编辑包括添加新标签
          */
-        toArticleDetail(id, isEdit) {
+        toTagDetail(id, isEdit) {
             if (id === null) {
-                const load = loading.service({
-                    lock: true,
-                    text: '文章新建中...',
-                    spinner: 'el-icon-loading',
-                    background: 'rgba(0, 0, 0, 0.7)'
-                });
-
-                axios.post('/api/articles', {}).then(res => {
-                    load.close();
-                    this.$router.push({
-                        path: `/articles/${res.data._id}`,
-                        query: {
-                            isEdit
-                        }
-                    });
-                });
+                id = 0;
             }
-            else {
-                this.$router.push({
-                    path: `/articles/${id}`,
-                    query: {
-                        isEdit
-                    }
-                });
-            }
+            this.$router.push({
+                path: `/tags/${id}`,
+                query: {
+                    isEdit
+                }
+            });
         },
 
         /**
-         * 删除文章
+         * 删除标签
          *
-         * @param {Object} articleItem 一条文章数据
+         * @param {Object} tagItem 一条标签数据
          */
-        deleteArticle(articleItem) {
+        deleteTag(tagItem) {
             messageBox.confirm('此操作将永久删除该资源, 是否继续?', '提示', {
                 confirmButtonText: '继续',
                 cancelButtonText: '取消',
                 type: 'warning'
-            }).then(() => axios.delete('/api/articles/' + articleItem._id)
+            }).then(() => axios.delete('/api/tags/' + tagItem._id)
             ).then(res => {
                 // 移除页面中的数据
                 this.tableData.some((item, index) => {
-                    if (item._id === articleItem._id) {
+                    if (item._id === tagItem._id) {
                         this.tableData.splice(index, 1);
                         return true;
                     }
@@ -175,7 +146,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.article-list {
+.tag-list {
     .button-line {
         text-align: right;
         padding: 5px 0;

@@ -40,6 +40,7 @@ import elInput from 'element-ui/lib/input';
 import axios from '@/../plugins/axios';
 
 export default {
+    layout: 'admin',
     components: {
         elButton,
         elForm,

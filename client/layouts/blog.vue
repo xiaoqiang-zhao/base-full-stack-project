@@ -1,6 +1,6 @@
 <template>
     <div class="page-root">
-        <app-header ref="header"></app-header>
+        <div>blog header</div>
         <nuxt to="/articles"></nuxt>
         <app-footer></app-footer>
     </div>
@@ -8,7 +8,7 @@
 
 <script>
 /**
- * @file 默认页面布局
+ * @file 博客端页面布局
  * @author 小强赵
  */
 import appHeader from '../components/app-header.vue';
@@ -19,10 +19,6 @@ export default {
     components: {
         appHeader,
         appFooter
-    },
-    mounted() {
-        // 用于全局调用登录弹框
-        window.rootVueComponent = this;
     }
 };
 </script>

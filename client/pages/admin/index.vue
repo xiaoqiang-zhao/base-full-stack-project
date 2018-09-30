@@ -3,7 +3,7 @@
 </template>
 <script>
 /**
- * @file 博客首页
+ * @file 首页引导
  * @author 小强赵
  */
 
@@ -11,7 +11,7 @@ import articles from './articles';
 import axios from '@/../plugins/axios';
 
 export default {
-    layout: 'blog',
+    layout: 'admin',
     components: {
         articles
     },

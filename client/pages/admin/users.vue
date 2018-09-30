@@ -108,6 +108,7 @@ import axios from '@/../plugins/axios';
 import utiles from '@/../utiles';
 
 export default {
+    layout: 'admin',
     components: {
         elTable,
         elTableColumn,
