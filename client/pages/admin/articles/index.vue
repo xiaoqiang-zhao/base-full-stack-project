@@ -160,7 +160,7 @@ export default {
         },
 
         /**
-         * 格式化一条资源数据的两个时间字段：createDate、updateDate
+         * 格式化一条文章数据的两个时间字段：createDate、updateDate
          *
          * @param {Object} row 一条资源数据
          * @param {Object} column 单元格对象

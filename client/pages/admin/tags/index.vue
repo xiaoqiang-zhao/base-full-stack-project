@@ -97,7 +97,7 @@ export default {
                 id = 0;
             }
             this.$router.push({
-                path: `/tags/${id}`,
+                path: `/admin/tags/${id}`,
                 query: {
                     isEdit
                 }

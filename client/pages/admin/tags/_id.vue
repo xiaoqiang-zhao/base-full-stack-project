@@ -104,7 +104,7 @@ export default {
         // 返回列表页
         back() {
             this.$router.push({
-                path: '/tags'
+                path: '/admin/tags'
             });
         }
     }

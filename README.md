@@ -28,19 +28,32 @@ npm run build
 npm run pm2
 ```
 
-## 架构
+## server 端架构
 
-router - 负责对外提供 API 的定义，整合下面的 api 和 middleware 层；
+* router - 负责对外提供 API 的定义，整合下面的 api 和 middleware 层；
 
-api - 定义 API，过滤无效数据，在一定程度上这就是一份文档；
+* api - 定义 API，过滤无效数据，在一定程度上这就是一份文档；
 
-middleware - 中间件，主要是权限校验；
+* middleware - 中间件，主要是权限校验；
 
-proxy - 代理层，负责校验(重点是数据的有效性)，组合不同的 model 向上层输出，同时为以后数据存储方式的变更留下扩展点；
+* proxy - 代理层，负责校验(重点是数据的有效性)，组合不同的 model 向上层输出，同时为以后数据存储方式的变更留下扩展点；
 
-models - 数据实体的定义，和数据库的交互也在此定义。
+* models - 数据实体的定义，和数据库的交互也在此定义。
 
 权限的校验规则在 router 中配置，包括登录权限和操作权限；校验规则在 middleware 中定义。
+
+## client 端架构
+
+* components 中存放公共组件；
+* layouts 中存放模板，当前项目包括管理端和博客端，在页面中配置属于哪一端；
+* pages 中存放页面，pages/admin 下是管理端页面，其他的是博客端页面。
+
+```js
+// pages 中配置模板的方法
+export default {
+    layout: 'blog'
+}
+```
 
 ## 细节
 

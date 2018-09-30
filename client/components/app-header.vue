@@ -14,10 +14,10 @@
             :router="true"
             :default-active="activeIndex"
             mode="horizontal">
-            <el-menu-item index="/articles">文章管理</el-menu-item>
-            <el-menu-item v-if="isRoot" index="/tags">标签管理</el-menu-item>
+            <el-menu-item index="/admin/articles">文章管理</el-menu-item>
+            <el-menu-item v-if="isRoot" index="/admin/tags">标签管理</el-menu-item>
             <!-- <el-menu-item index="/articles">统计分析</el-menu-item> -->
-            <el-menu-item v-if="isRoot" index="/users">用户管理</el-menu-item>
+            <el-menu-item v-if="isRoot" index="/admin/users">用户管理</el-menu-item>
         </el-menu>
 
         <!-- 用户部分 -->
@@ -134,7 +134,7 @@ export default {
     data() {
         return {
             isRoot: false,
-            activeIndex: '/articles',
+            activeIndex: '/admin/articles',
             siginDialogVisible: false,
             form: {
                 name: '',
@@ -205,17 +205,17 @@ export default {
             // 处理刷新时 menu 选中某个 item
             const map = [
                 {
-                    names: ['users'],
-                    path: '/users'
+                    names: ['admin-users'],
+                    path: '/admin/users'
                 },
                 {
-                    names: ['tags', 'tags-id'],
-                    path: '/tags'
+                    names: ['admin-tags', 'admin-tags-id'],
+                    path: '/admin/tags'
                 },
                 // 首页(路由为 / )的页面名称是 index
                 {
-                    names: ['articles', 'articles-id', 'index'],
-                    path: '/articles'
+                    names: ['admin-articles', 'admin-articles-id', 'admin'],
+                    path: '/admin/articles'
                 }
             ];
             map.some(item => {
