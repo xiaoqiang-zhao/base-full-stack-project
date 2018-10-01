@@ -1,7 +1,10 @@
 <template>
     <section class="container article-list">
         <!-- 文章列表 -->
-        <article class="article-item" v-for="item in articleList">
+        <article
+            class="article-item"
+            v-for="item in articleList"
+            @click="toArticleDetail(item._id)">
             <header>{{item.title}}</header>
             <section class="description">
                 {{item.description}}
@@ -93,6 +96,7 @@ export default {
         padding: 1em;
         border: 1px solid #d8d5d5;
         box-shadow: 2px 3px 5px rgba(0, 0, 0, .1), -2px -3px 5px rgba(0, 0, 0, .1);
+        cursor: pointer;
         > header {
             margin-bottom: 16px;
             font-size: 20px;
