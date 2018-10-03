@@ -6,74 +6,17 @@
             <div class="tags date">
                 <span
                     v-for="item in tags"
-                    v-if="item.isSelected"
-                    class="item"
-                    :class="{selected: item.isSelected}">
-                    {{item.text}}
-                </span>
-                <span
-                    v-if="status === 'editor'"
-                    class="item selected iconfont icon-setting"
-                    @click="tagDialogVisible = true">
+                    class="item selected">
+                    {{item}}
                 </span>
                 <span class="date-text">{{createDate}}</span>
             </div>
             <div v-html="mdHTML"></div>
         </div>
         <!-- 中间 按钮区 -->
-        <div v-if="status === 'editor'" class="middle" :class="{'editor-folded': isFoldEditor}">
-            <button
-                class="btn iconfont icon-save"
-                @click="updateArticle">
-            </button>
-            <button
-                v-if="!isFoldEditor"
-                class="btn iconfont icon-img"
-                @click="imgDialogVisible = true">
-            </button>
-            <button
-                class="btn iconfont icon-fold-right"
-                :class="{'icon-fold-left': isFoldEditor}"
-                @click="isFoldEditor = !isFoldEditor">
-            </button>
+        <div class="middle">
+            <button class="btn iconfont icon-save"></button>
         </div>
-        <!-- 编辑区 -->
-        <div v-if="status === 'editor' && !isFoldEditor" class="editor">
-            <el-input
-                type="textarea"
-                :autosize="{minRows: 55}"
-                resize="none"
-                placeholder="请输入文章内容"
-                v-model="mdText">
-            </el-input>
-        </div>
-        <el-dialog
-            :visible.sync="imgDialogVisible"
-            :fullscreen="true"
-            title="上传图片">
-            <el-upload
-                class="upload-demo"
-                action="/api/upload"
-                :on-success="handleSuccess"
-                :on-preview="handlePictureCardPreview"
-                list-type="picture">
-                <el-button size="small" type="primary">点击上传</el-button>
-                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-            </el-upload>
-        </el-dialog>
-        <el-dialog
-            :visible.sync="tagDialogVisible"
-            title="编辑标签">
-            <div class="tags">
-                <span
-                    v-for="item in tags"
-                    class="item"
-                    :class="{selected: item.isSelected}"
-                    @click="item.isSelected = !item.isSelected">
-                    {{item.text}}
-                </span>
-            </div>
-        </el-dialog>
     </section>
 </template>
 <script>
@@ -81,22 +24,6 @@
  * @file 文章详情页
  * @author 小强赵
  */
-import message from 'element-ui/lib/message';
-import 'element-ui/lib/theme-chalk/message.css';
-
-import elTable from 'element-ui/lib/table';
-import elTableColumn from 'element-ui/lib/table-column';
-import 'element-ui/lib/theme-default/table.css';
-import elButton from 'element-ui/lib/button';
-import elForm from 'element-ui/lib/form';
-import 'element-ui/lib/theme-chalk/form.css';
-import elFormItem from 'element-ui/lib/form-item';
-import 'element-ui/lib/theme-chalk/form-item.css';
-import elInput from 'element-ui/lib/input';
-import elDialog from 'element-ui/lib/dialog';
-import 'element-ui/lib/theme-chalk/dialog.css';
-import elUpload from 'element-ui/lib/upload';
-import 'element-ui/lib/theme-chalk/upload.css';
 
 // markdown 部分
 import remark from 'remark';
@@ -112,16 +39,6 @@ import utiles from '@/../utiles';
 
 export default {
     layout: 'blog',
-    components: {
-        elTable,
-        elTableColumn,
-        elButton,
-        elForm,
-        elFormItem,
-        elInput,
-        elDialog,
-        elUpload
-    },
     data() {
         return {
             mdHTML: '',
@@ -129,13 +46,7 @@ export default {
             title: '',
             // 文章创建时间
             createDate: '',
-            tags: [],
-            tagDialogVisible: false,
-            // 上传图片弹窗
-            imgDialogVisible: false,
-            isFoldEditor: false,
-            // 状态：preview: 预览状态, editor: 编辑状态
-            status: ''
+            tags: []
         };
     },
     watch: {
@@ -147,41 +58,12 @@ export default {
         axios.get(`/api/articles/${this.$route.params.id}`).then(res => {
             this.title = res.data.title;
             this.createDate = utiles.formatDate(res.data.createDate, true);
-            this.mergeTags(res.data.tags);
             this.mdText = res.data.mdContent;
+            this.tags = res.data.tags;
             this.mdToHtml();
         });
-
-        this.isFoldEditor = !this.$route.query.isEdit;
-        this.status = +this.$route.query.isEdit ? 'editor' : 'preview';
-        // 参数 this.$route.query.isEdit 的值刷新后会成为 string，这里用加号强制转成 number
     },
     methods: {
-
-        mergeTags(tags) {
-            const extendTags = [];
-            if (this.status === 'preview') {
-                tags.forEach(element => {
-                    extendTags.push({
-                        text: element,
-                        isSelected: true
-                    });
-                });
-                this.tags = extendTags;
-            }
-            else {
-                axios.get('/api/tags').then(res => {
-                    this.tags = res.data.tags;
-                    res.data.forEach(element => {
-                        extendTags.push({
-                            text: element.text,
-                            isSelected: tags.indexOf(element.text) > -1
-                        });
-                    });
-                    this.tags = extendTags;
-                });
-            }
-        },
 
         /**
          * 将 markdown 转为 html
@@ -201,48 +83,6 @@ export default {
                         return $1;
                     });
                 });
-        },
-
-        /**
-         * 更新文章内容
-         */
-        updateArticle() {
-            const tags = [];
-            this.tags.forEach(element => {
-                if (element.isSelected) {
-                    tags.push(element.text);
-                }
-            });
-            axios.post(`/api/articles/${this.$route.params.id}`, {
-                mdContent: this.mdText,
-                tags
-            }).then(res => {
-                message({
-                    type: 'success',
-                    message: '保存成功'
-                });
-            });
-        },
-
-        /**
-         * 上传成功后的回调函数
-         *
-         * @param {Object} response 返回头
-         * @param {Object} file 当前图片对象
-         * @param {Array} fileList 上传列表汇总
-         */
-        handleSuccess(response, file, fileList) {
-            file.name = '/' + response.data.path;
-        },
-
-        /**
-         * 点击预览的回调，这里用作生成 markdown 图片文本
-         *
-         * @param {Object} file 图片对象
-         */
-        handlePictureCardPreview(file) {
-            this.dialogImageUrl = file.url;
-            this.dialogVisible = true;
         }
     }
 };
