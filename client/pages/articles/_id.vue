@@ -46,13 +46,9 @@ export default {
             title: '',
             // 文章创建时间
             createDate: '',
-            tags: []
+            tags: [],
+            titleTree: []
         };
-    },
-    watch: {
-        mdText(newValue, oldValue) {
-            this.mdToHtml();
-        }
     },
     mounted() {
         axios.get(`/api/articles/${this.$route.params.id}`).then(res => {
@@ -75,14 +71,37 @@ export default {
             remark()
                 .use([html, midas])
                 .use(highlight)
+                .use(() => treeRoot => this.pickUpTitleTree(treeRoot))
                 .process(this.mdText, (err, file) => {
                     me.mdHTML = file.contents;
-                    // 提取标题
-                    me.mdHTML.replace(/<h1>(.+)<\/h1>/, (matchStr, $1) => {
-                        this.title = $1;
-                        return $1;
-                    });
                 });
+        },
+
+        /**
+         * 提取标题树
+         *
+         * @param {Object} treeRoot md 文档树根节点
+         */
+        pickUpTitleTree(treeRoot) {
+            const titleTree = [];
+            treeRoot.children.forEach(item => {
+                if (item.type === 'heading' && item.depth > 1) {
+                    // console.log(item.children[0].value);
+                    if (item.depth === 2) {
+                        titleTree.push({
+                            text: item.children[0].value
+                        });
+                    }
+                    else if (item.depth === 3) {
+                        const last = titleTree[titleTree.length - 1];
+                        last.children = last.children ? last.children : [];
+                        last.children.push({
+                            text: item.children[0].value
+                        });
+                    }
+                }
+            });
+            this.titleTree = titleTree;
         }
     }
 };
