@@ -13,9 +13,25 @@
             </div>
             <div v-html="mdHTML"></div>
         </div>
-        <!-- 中间 按钮区 -->
-        <div class="middle">
-            <button class="btn iconfont icon-save"></button>
+        <!-- 内容导航区 -->
+        <div class="title-tree" :class="{ 'open': isOpenHeaders, 'close': !isOpenHeaders}">
+            <header>
+                <span class="text">文章目录</span>
+                <button class="icon-catalogue" v-on:click="openHeaders">
+                    <i></i>
+                </button>
+                <button class="icon-close" v-on:click="closeHeaders"></button>
+            </header>
+            <ul>
+                <li v-for="item in titleTree">
+                    <a :href="'#' + item.text">{{item.text}}</a>
+                    <ul v-if="item.children && item.children.length > 0">
+                        <li v-for="item in item.children">
+                            <a :href="'#' + item.text">{{item.text}}</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </section>
 </template>
@@ -36,6 +52,7 @@ import 'github-markdown-css/github-markdown.css';
 
 import axios from '@/../plugins/axios';
 import utiles from '@/../utiles';
+import addIdForHeading from '@/plugins/remark-add-id-for-heading';
 
 export default {
     layout: 'blog',
@@ -47,7 +64,8 @@ export default {
             // 文章创建时间
             createDate: '',
             tags: [],
-            titleTree: []
+            titleTree: [],
+            isOpenHeaders: true
         };
     },
     mounted() {
@@ -70,6 +88,7 @@ export default {
             const me = this;
             remark()
                 .use([html, midas])
+                .use(addIdForHeading)
                 .use(highlight)
                 .use(() => treeRoot => this.pickUpTitleTree(treeRoot))
                 .process(this.mdText, (err, file) => {
@@ -102,6 +121,14 @@ export default {
                 }
             });
             this.titleTree = titleTree;
+        },
+
+        openHeaders() {
+
+        },
+
+        closeHeaders() {
+
         }
     }
 };
@@ -110,8 +137,7 @@ export default {
 .article-detail {
     display: flex;
     justify-content: center;
-    .view,
-    .editor {
+    .view {
         flex: 1;
         margin: 5px;
         box-shadow: 2px 3px 5px rgba(0, 0, 0, .1), -2px -3px 5px rgba(0, 0, 0, .1);
@@ -137,40 +163,195 @@ export default {
         }
     }
 
-    .editor .el-textarea > textarea {
-        border: none;
-        padding: 10px 13px;
-    }
-
-    .middle {
-        flex: 0 0 80px;
-        margin: 5px;
-        text-align: center;
-        .btn {
-            display: inline-block;
-            width: 2.5em;
-            height: 2.5em;
-            line-height: 2.5em;
-            margin: 20px 0;
-            background: none;
-            border: none;
-            border-radius: 50px;
-            font-size: 18px;
-            text-align: center;
-            box-shadow: 2px 3px 5px rgba(0, 0, 0, .1), -2px -3px 5px rgba(0, 0, 0, .1);
-            outline: none;
-            cursor: pointer;
-            transition: 300ms;
-            &:hover {
-                background: #409EFF;
-                color: #fff;
+    .title-tree {
+        &.open {
+            flex: 0 0 260px;
+            margin: 5px 0 0 10px;
+            position: relative;
+            max-width: 260px;
+            min-width: 120px;
+            max-height: 97vh;
+            overflow: auto;
+            box-sizing: border-box;
+            border: 1px solid #e2e2e2;
+            font-size: 14px;
+            line-height: 1em;
+            transition: border-radius .5s;
+            > ul {
+                max-width: 260px;
+                min-width: 120px;
+                margin-bottom: 5px;
             }
         }
-        .icon-fold-left {
-            transform: rotate(180deg);
+        ul {
+            padding: 0 6px 0 20px;
         }
-        &.editor-folded {
-            margin-right: -80px;
+        ul li {
+            list-style: none;
+            position: relative;
+        }
+        ul li a {
+            padding: 5px 0;
+        }
+        ul li:before {
+            content: "\200B";
+            display: inline-block;
+            box-sizing: border-box;
+            height: 4px;
+            width: 4px;
+            overflow: hidden;
+            position: absolute;
+            left: -9px;
+            top: 11px;
+            border: 2px solid #5a5a5a;
+            border-radius: 2px;
+            vertical-align: middle;
+        }
+        ul ul li:before {
+            border: 1px solid #ccc;
+        }
+        a {
+            display: inline-block;
+            width: 100%;
+            overflow: hidden;
+            /* 不折行 */
+            text-overflow: ellipsis;
+            white-space: nowrap; /* 强制不换行 */
+            color: #2479cc;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        ul ul {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        .icon-catalogue {
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            display: none; /* 宽屏隐藏 */
+            box-sizing: border-box;
+            width: 38px;
+            height: 38px;
+            border: none;
+            padding: 5px 6px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .icon-close {
+            position: absolute;
+            right: 0;
+            display: none;
+            border: none;
+            background: none;
+        }
+        &.close {
+            > ul {
+                display: none;
+            }
+            .text {
+                display: none;
+            }
+        }
+        &.open > header {
+            position: relative;
+            padding-top: 0;
+            display: block;
+            box-sizing: border-box;
+            padding-bottom: 3px;
+            border-bottom: 1px solid #e2e2e2;
+            margin: 6px;
+            font-weight: 700;
+            background: #fff;
+            line-height: 1.5em;
+        }
+    }
+    /* 文章列表图标 */
+    .icon-catalogue {
+        display: inline-block;
+    }
+    .icon-catalogue i,
+    .icon-catalogue i:before,
+    .icon-catalogue i:after {
+        position: relative;
+        box-sizing: border-box;
+        display: block;
+        height: 2px;
+        width: 20px;
+        border-left: 2px solid #006a00;
+        border-right: 15px solid #006a00;
+        margin: 13px 2px;
+    }
+    .icon-catalogue i:before,
+    .icon-catalogue i:after {
+        position: absolute;
+        margin: 0;
+        content: "\200B";
+        left: -2px;
+    }
+    .icon-catalogue i:before {
+        top: -6px;
+    }
+    .icon-catalogue i:after {
+        bottom: -6px;
+    }
+    /* 关闭按钮图标，当前只有这里用到，
+    如果有第二处使用，需要提到公共文件中( icon 文件夹下是个不错的选择)
+    */
+    .icon-close {
+        position: relative;
+        box-sizing: border-box;
+        display: inline-block;
+        height: 18px;
+        width: 18px;
+        cursor: pointer;
+    }
+    .icon-close:before,
+    .icon-close:after {
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        top: 50%;
+        left: 0;
+        background: #006a00;
+        content: "\200B";
+    }
+    .icon-close:before {
+        transform: rotate(45deg);
+    }
+    .icon-close:after {
+        transform: rotate(-45deg);
+    }
+    /* 小于800时文章目录显示为图标 */
+    @media screen and (max-width: 800px) {
+        .title-tree {
+            position: absolute;
+            right: 0;
+        }
+        .title-tree {
+            width: 40px;
+            height: 40px;
+            min-width: 40px; /* 不加会出现侧 U 型边框 */
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .title-tree.open {
+            /* 消除 pc 端最小高宽的限制，因为关闭状态下内容会窄 */
+            height: auto;
+            width: auto;
+            min-width: auto;
+            background: #fff;
+            border-radius: 0;
+        }
+        .title-tree .icon-catalogue {
+            display: inline-block;
+            background: #fff;
+        }
+        .title-tree.open .icon-catalogue {
+            display: none;
+        }
+        .title-tree.open .icon-close {
+            display: inline-block;
         }
     }
 
