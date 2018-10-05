@@ -17,10 +17,10 @@
         <div class="title-tree" :class="{ 'open': isOpenHeaders, 'close': !isOpenHeaders}">
             <header>
                 <span class="text">文章目录</span>
-                <button class="icon-catalogue" v-on:click="openHeaders">
+                <button class="icon-catalogue" v-on:click="isOpenHeaders = true;">
                     <i></i>
                 </button>
-                <button class="icon-close" v-on:click="closeHeaders"></button>
+                <button class="icon-close" v-on:click="isOpenHeaders = false;"></button>
             </header>
             <ul>
                 <li v-for="item in titleTree">
@@ -76,6 +76,13 @@ export default {
             this.tags = res.data.tags;
             this.mdToHtml();
         });
+
+        let isPhone = false;
+        if (window.screen.width < 800) {
+            isPhone = true;
+        }
+        // 手机上关闭，PC 上打开
+        this.isOpenHeaders = !isPhone;
     },
     methods: {
 
@@ -121,14 +128,6 @@ export default {
                 }
             });
             this.titleTree = titleTree;
-        },
-
-        openHeaders() {
-
-        },
-
-        closeHeaders() {
-
         }
     }
 };
