@@ -4,6 +4,7 @@
   "description": "基础全栈项目",
   "scripts": {
     "dev": "backpack dev",
+    "db": "sudo /usr/local/mongodb-osx-x86_64-enterprise-3.6.0/bin/mongod --config ./mongod.conf",
     "build": "nuxt build && backpack build",
     "start": "cross-env NODE_ENV=production node build/main.js",
     "pm2": "cross-env NODE_ENV=production pm2 start build/main.js --name ssr-full-stack:9090"

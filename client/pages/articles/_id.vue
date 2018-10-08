@@ -163,25 +163,6 @@ export default {
     }
 
     .title-tree {
-        &.open {
-            flex: 0 0 260px;
-            margin: 5px 0 0 10px;
-            position: relative;
-            max-width: 260px;
-            min-width: 120px;
-            max-height: 97vh;
-            overflow: auto;
-            box-sizing: border-box;
-            border: 1px solid #e2e2e2;
-            font-size: 14px;
-            line-height: 1em;
-            transition: border-radius .5s;
-            > ul {
-                max-width: 260px;
-                min-width: 120px;
-                margin-bottom: 5px;
-            }
-        }
         ul {
             padding: 0 6px 0 20px;
         }
@@ -226,8 +207,6 @@ export default {
         }
         .icon-catalogue {
             position: absolute;
-            top: -6px;
-            left: -6px;
             display: none; /* 宽屏隐藏 */
             box-sizing: border-box;
             width: 38px;
@@ -244,25 +223,45 @@ export default {
             border: none;
             background: none;
         }
+        &.open {
+            flex: 0 0 260px;
+            margin: 5px 0 0 10px;
+            max-width: 260px;
+            min-width: 120px;
+            max-height: 97vh;
+            overflow: auto;
+            box-sizing: border-box;
+            border: 1px solid #e2e2e2;
+            font-size: 14px;
+            line-height: 1em;
+            transition: border-radius .5s;
+            > ul {
+                max-width: 260px;
+                min-width: 120px;
+                margin-bottom: 5px;
+            }
+            > header {
+                position: relative;
+                padding-top: 0;
+                display: block;
+                box-sizing: border-box;
+                padding-bottom: 3px;
+                border-bottom: 1px solid #e2e2e2;
+                margin: 6px;
+                font-weight: 700;
+                background: #fff;
+                line-height: 1.5em;
+            }
+        }
         &.close {
+            margin-top: 5px;
+            box-shadow: 2px 3px 5px rgba(0, 0, 0, .1), -2px -3px 5px rgba(0, 0, 0, .1);
             > ul {
                 display: none;
             }
             .text {
                 display: none;
             }
-        }
-        &.open > header {
-            position: relative;
-            padding-top: 0;
-            display: block;
-            box-sizing: border-box;
-            padding-bottom: 3px;
-            border-bottom: 1px solid #e2e2e2;
-            margin: 6px;
-            font-weight: 700;
-            background: #fff;
-            line-height: 1.5em;
         }
     }
     /* 文章列表图标 */
@@ -321,7 +320,7 @@ export default {
     .icon-close:after {
         transform: rotate(-45deg);
     }
-    /* 小于800时文章目录显示为图标 */
+    // 小于800时文章目录显示为图标
     @media screen and (max-width: 800px) {
         .title-tree {
             position: absolute;
@@ -330,12 +329,12 @@ export default {
         .title-tree {
             width: 40px;
             height: 40px;
-            min-width: 40px; /* 不加会出现侧 U 型边框 */
+            min-width: 40px; // 不加会出现侧 U 型边框
             border-radius: 20px;
             overflow: hidden;
         }
         .title-tree.open {
-            /* 消除 pc 端最小高宽的限制，因为关闭状态下内容会窄 */
+            // 消除 pc 端最小高宽的限制，因为关闭状态下内容会窄
             height: auto;
             width: auto;
             min-width: auto;
