@@ -27,6 +27,10 @@ module.exports = {
             href: '/favicon.ico'
         }]
     },
+    // 添加禁用预加载，采用按需加载策略
+    render: {
+        resourceHints: false
+    },
     // Global CSS
     css: ['~assets/css/main.less'],
     // Customize the progress-bar color
