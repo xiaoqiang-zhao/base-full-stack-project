@@ -125,7 +125,7 @@ export default {
             }
             else {
                 this.$router.push({
-                    path: `/articles/${id}`,
+                    path: `/admin/articles/${id}`,
                     query: {
                         isEdit
                     }
