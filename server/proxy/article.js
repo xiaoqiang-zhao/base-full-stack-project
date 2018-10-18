@@ -143,7 +143,10 @@ export default {
      * @return {Object} 数据查询操作结果，Promise 对象
      */
     getArticleList() {
-        return ArticleModel.find();
+        return ArticleModel.find().sort({
+            // 倒序
+            createDate: -1
+        });
     },
 
     /**
