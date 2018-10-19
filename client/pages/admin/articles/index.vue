@@ -116,7 +116,7 @@ export default {
                 axios.post('/api/articles', {}).then(res => {
                     load.close();
                     this.$router.push({
-                        path: `/articles/${res.data._id}`,
+                        path: `/admin/articles/${res.data._id}`,
                         query: {
                             isEdit
                         }
