@@ -18,6 +18,7 @@
                 <span class="date-text">{{dateFormatter(item.createDate)}}</span>
             </footer>
         </article>
+        <div v-if="articleList.length === 0" class="empty-data">暂无数据</div>
     </section>
 </template>
 <script>
