@@ -46,7 +46,7 @@
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
                 <el-form-item label="密码:" prop="name">
-                    <el-input type="password" v-model="form.pwd"></el-input>
+                    <el-input type="password" v-model="form.pwd" @keyup.enter="signin"></el-input>
                 </el-form-item>
             </el-form>
             <section slot="footer" class="dialog-footer">
