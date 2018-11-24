@@ -10,6 +10,7 @@
 
         <!-- 导航部分 -->
         <el-menu
+            v-if="currentUser"
             class="menu"
             :router="true"
             :default-active="activeIndex"
@@ -19,6 +20,7 @@
             <!-- <el-menu-item index="/articles">统计分析</el-menu-item> -->
             <el-menu-item v-if="isRoot" index="/admin/users">用户管理</el-menu-item>
         </el-menu>
+        <ul v-else class="menu"></ul>
 
         <!-- 用户部分 -->
         <div v-if="currentUser" class="user">
@@ -177,32 +179,12 @@ export default {
             }
         };
     },
-    mounted() {
-        axios.get('/api/users/current', {
-            // 去除统一提示
-            axiosSystemErrorMessage: false
-        }).then(res => {
-            const currentUser = res.data;
-            if (currentUser) {
-                this.setCurrentUser(currentUser);
-                this.changePasswordForm.id = res.data._id;
-                if (currentUser.name === 'root') {
-                    this.isRoot = true;
-                }
-            }
-            // 弹登录框
-            else {
-                this.siginDialogVisible = true;
-            }
-
-            this.$nextTick(() => {
-                this.setActiveIndex();
-            });
-        });
-    },
     methods: {
+
+        /**
+         * 处理刷新时 menu 选中某个 item
+         */
         setActiveIndex() {
-            // 处理刷新时 menu 选中某个 item
             const map = [
                 {
                     names: ['admin-users'],
@@ -225,6 +207,10 @@ export default {
                 }
             });
         },
+
+        /**
+         * 登录
+         */
         async signin() {
             const res = await axios.post('/api/users/signin', this.form);
             // 登录成功
@@ -241,9 +227,30 @@ export default {
                 });
             }
         },
+
+        /**
+         * 设置当前用户，由 admin 模板调用
+         *
+         * @param {Object} currentUser 当前用户
+         */
         setCurrentUser(currentUser) {
             this.currentUser = currentUser;
+            // 已登录 (未登录为 null)
+            if (currentUser) {
+                this.changePasswordForm.id = currentUser._id;
+                if (currentUser.name === 'root') {
+                    this.isRoot = true;
+                }
+            }
+
+            this.setActiveIndex();
         },
+
+        /**
+         * 用户相关操作
+         *
+         * @param {string} command 指令：退出登录或修改密码
+         */
         handleCommand(command) {
             // 退出
             if (command === 'signout') {
@@ -257,6 +264,10 @@ export default {
                 this.changePasswordDialogVisible = true;
             }
         },
+
+        /**
+         * 提交修改密码
+         */
         submitChangePassword() {
             this.$refs.changePasswordForm.validate(valid => {
                 // 检验不通过
