@@ -4,7 +4,7 @@
         <article
             class="article-item"
             v-for="item in articleList"
-            @click="toArticleDetail(item._id)">
+            @click="toArticleDetail(item)">
             <header>{{item.title}}</header>
             <section class="description">
                 {{item.description}}
@@ -67,18 +67,26 @@ export default {
         /**
          * 到文章详情页
          *
-         * @param {string} id 文章 ID，新建时 ID 为 null
+         * @param {Object} articleData 文章数据
          */
-        toArticleDetail(id) {
+        toArticleDetail(articleData) {
+            let path;
+            if (articleData.isSuperArticle) {
+                path = articleData.path;
+            }
+            else {
+                path = `/articles/${articleData._id}`;
+            }
+
             this.$router.push({
-                path: `/articles/${id}`
+                path
             });
         },
 
         /**
-         * 格式化创建时间字段
+         * 格式化时间字段
          *
-         * @param {string} date 创建时间字段值
+         * @param {string} date 时间字段值
          *
          * @return {string} 格式化后的时间
          */
