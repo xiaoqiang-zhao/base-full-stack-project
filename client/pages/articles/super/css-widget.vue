@@ -138,16 +138,75 @@ export default {
          * 以下一个标题作为参考点，添加示例样式
          */
         appendDemoDom() {
+            // 单行文字截断 Demo
             this.factory(
-                '折行',
-                `<div>123
+                '多行文字超出截断【移动】',
+                `<div class="ellipsis ellipsis-demo">
+                    200px 的宽度，超出显示省略号，后面是占位文字：aaaaaaaaaaaaaa
                 </div>`
             );
+
+            // 行文字超出截断【移动】
+            this.factory(
+                '多行文字超出截断【PC】',
+                `<div class="line-clamp line-clamp-demo">
+                    200px 的宽度，2 行文字后超出显示省略号，后面是占位文字：aaaaaaaaaaaaaa
+                </div>`
+            );
+
+            // 行文字超出截断【PC】
+            this.factory(
+                '独立样式',
+                `<div class="wrap wrap-demo">
+                    <div class="text">
+                        200px 的宽度，展示文字较少的情况
+                    </div>
+                </div>`
+            );
+            this.factory(
+                '独立样式',
+                `<div class="wrap wrap-demo">
+                    <div class="text">
+                        200px 的宽度，2 行文字后超出显示省略号，后面是占位文字：aaaaaaaaaaaaaa
+                    </div>
+                </div>`
+            );
+
+            // 大图小字
+            this.factory(
+                '小图大字',
+                `<div class="img-text-container img-text-container-demo">
+                    <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543398185822&di=7ccd63fa548b7ff15b29ca0b2faf1127&imgtype=0&src=http%3A%2F%2Fcdnimg103.lizhi.fm%2Faudio_cover%2F2018%2F01%2F28%2F2649655558190180871_320x320.jpg">
+                    图片配文字
+                </div>`
+            );
+            this.factory(
+                '小图大字',
+                `<div class="img-text-container img-text-container-demo icon-local">
+                    iconfont 配文字
+                </div>`
+            );
+
+            // 小图大字
+            this.factory(
+                '数据为空&暂无权限',
+                `<div class="icon-text-container icon-text-container-demo">
+                    <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543398185822&di=7ccd63fa548b7ff15b29ca0b2faf1127&imgtype=0&src=http%3A%2F%2Fcdnimg103.lizhi.fm%2Faudio_cover%2F2018%2F01%2F28%2F2649655558190180871_320x320.jpg">
+                    图片配文字
+                </div>`
+            );
+            this.factory(
+                '数据为空&暂无权限',
+                `<div class="icon-text-container icon-text-container-demo icon-local">
+                    iconfont 配文字
+                </div>`
+            );
+            
         },
 
         factory(id, html) {
             const demoContainer = document.createElement('div');
-            demoContainer.className = 'demo';
+            demoContainer.className = 'demo-container';
             demoContainer.innerHTML = html;
             const referenceElement = document.getElementById(id);
             document.getElementById('md-container').insertBefore(demoContainer, referenceElement);
@@ -398,6 +457,118 @@ export default {
             float: right;
             color: #909399;
         }
+    }
+}
+.demo-container {
+    // CSS widget 实现代码
+    // 清除浮动
+    .c-f,
+    .clear-float {
+        zoom: 1; /* 兼容IE7及以下 */
+    }
+    .c-f:after,
+    .clear-float:after {
+        content: "\200B";
+        display: block;
+        height: 0;
+        clear: both;
+    }
+
+    // 单行截断
+    .ellipsis,
+    .text-overflow-ellipsis {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    // 多行截断：方案一(移动版)
+    .line-clamp {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        -webkit-line-clamp: 2;
+    }
+    // 多行截断：方案一(PC版)
+    .wrap {
+        // box-sizing: content-box;
+        height: 40px;
+        line-height: 20px;
+        overflow: hidden;
+    }
+    .wrap .text {
+        float: right;
+        margin-left: -5px;
+        width: 100%;
+        word-break: break-all;
+    }
+    .wrap::before {
+        float: left;
+        width: 5px;
+        content: '';
+        height: 100%;
+    }
+    .wrap::after {
+        float: right;
+        content: "...";
+        height: 20px;
+        line-height: 20px;
+        /* 为三个省略号的宽度 */
+        width: 3em;
+        /* 使盒子不占位置 */
+        margin-left: -3em;
+        /* 移动省略号位置 */
+        position: relative;
+        left: 100%;
+        top: -20px;
+        padding-right: 5px;
+        // background: #2479cc;
+        background: linear-gradient(to right, rgba(255,255,255,.1) 10%, #fff, #fff);
+        text-align: right;
+    }
+
+    // 大图小字
+    .img-text-container {
+        font-size: 16px;
+        line-height: 40px;
+    }
+    .img-text-container::before,
+    .img-text-container img {
+        font-family: "iconfont";
+        margin-right: 5px;
+        font-size: 40px;
+        height: 40px;
+        float: left;
+        color: #555;
+    }
+
+    // 小图大字
+    .icon-text-container {
+        font-size: 16px;
+        line-height: 1em;
+        vertical-align: middle;
+    }
+    .icon-text-container::before,
+    .icon-text-container img {
+        font-family: "iconfont";
+        margin-right: 5px;
+        font-size: 14px;
+        height: 14px;
+        color: #555;
+    }
+
+    // 示例代码
+    .ellipsis-demo,
+    .line-clamp-demo,
+    .icon-text-container-demo {
+        width: 200px;
+        border: 1px solid #999;
+    }
+    .img-text-container-demo,
+    .wrap-demo {
+        width: 200px;
+        height: 40px;
+        outline: 1px solid #999;
     }
 }
 </style>
