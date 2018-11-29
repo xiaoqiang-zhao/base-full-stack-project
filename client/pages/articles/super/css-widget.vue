@@ -182,7 +182,7 @@ export default {
             );
             this.factory(
                 '小图大字',
-                `<div class="img-text-container img-text-container-demo icon-local">
+                `<div class="img-text-container img-text-container-demo iconfont icon-setting">
                     iconfont 配文字
                 </div>`
             );
@@ -192,13 +192,26 @@ export default {
                 '数据为空&暂无权限',
                 `<div class="icon-text-container icon-text-container-demo">
                     <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543398185822&di=7ccd63fa548b7ff15b29ca0b2faf1127&imgtype=0&src=http%3A%2F%2Fcdnimg103.lizhi.fm%2Faudio_cover%2F2018%2F01%2F28%2F2649655558190180871_320x320.jpg">
-                    图片配文字
+                    x图片配文字
                 </div>`
             );
             this.factory(
                 '数据为空&暂无权限',
-                `<div class="icon-text-container icon-text-container-demo icon-local">
-                    iconfont 配文字
+                `<div class="icon-text-container icon-text-container-demo iconfont icon-setting">
+                    x图标配文字
+                </div>`
+            );
+            this.factory(
+                '数据为空&暂无权限',
+                `<div class="icon-text-container icon-text-container-demo2">
+                    <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543398185822&di=7ccd63fa548b7ff15b29ca0b2faf1127&imgtype=0&src=http%3A%2F%2Fcdnimg103.lizhi.fm%2Faudio_cover%2F2018%2F01%2F28%2F2649655558190180871_320x320.jpg">
+                    x图片配文字
+                </div>`
+            );
+            this.factory(
+                '数据为空&暂无权限',
+                `<div class="icon-text-container icon-text-container-demo2 iconfont icon-setting">
+                    x图标配文字
                 </div>`
             );
             
@@ -532,35 +545,40 @@ export default {
         font-size: 16px;
         line-height: 40px;
     }
-    .img-text-container::before,
-    .img-text-container img {
-        font-family: "iconfont";
+    .img-text-container img,
+    .img-text-container::before {
         margin-right: 5px;
         font-size: 40px;
         height: 40px;
-        float: left;
-        color: #555;
+        vertical-align: top;
     }
 
     // 小图大字
     .icon-text-container {
         font-size: 16px;
         line-height: 1em;
-        vertical-align: middle;
     }
-    .icon-text-container::before,
     .icon-text-container img {
-        font-family: "iconfont";
-        margin-right: 5px;
-        font-size: 14px;
+        display: inline-block;
         height: 14px;
+        margin-right: 5px;
+        // 高度的一半
+        margin-bottom: -7px;
+        vertical-align: 32%;
+    }
+    .icon-text-container::before {
+        display: inline-block;
+        font-family: "iconfont";
+        font-size: 14px;
         color: #555;
+        vertical-align: top;
     }
 
     // 示例代码
     .ellipsis-demo,
     .line-clamp-demo,
-    .icon-text-container-demo {
+    .icon-text-container-demo,
+    .icon-text-container-demo2 {
         width: 200px;
         border: 1px solid #999;
     }
@@ -569,6 +587,14 @@ export default {
         width: 200px;
         height: 40px;
         outline: 1px solid #999;
+    }
+    .icon-text-container-demo {
+        font-size: 28px;
+    }
+    .icon-text-container-demo2 {
+        font-size: 28px;
+        // line-height: 2em;
+        padding: 14px 0;
     }
 }
 </style>
