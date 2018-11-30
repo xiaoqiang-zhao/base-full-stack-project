@@ -214,7 +214,20 @@ export default {
                     x图标配文字
                 </div>`
             );
-            
+
+            this.factory(
+                '布局',
+                `<div class="space-item-demo">
+                    <span class="space-item">第一段文字</span><span class="space-item">第二段文字</span><span class="space-item">第三段文字</span>
+                </div>`
+            );
+
+            this.factory(
+                '布局',
+                `<div class="space-item-demo2">
+                    <span class="space-item">第一段文字</span><span class="space-item">第二段文字</span><span class="space-item">第三段文字</span>
+                </div>`
+            );
         },
 
         factory(id, html) {
@@ -574,6 +587,20 @@ export default {
         vertical-align: top;
     }
 
+    // 文字间隔
+    .space-item {
+        display: inline-block;
+        line-height: 1em;
+    }
+    .space-item:nth-of-type(n + 2)::before {
+        content: "\200B";
+        display: inline-block;
+        height: .15em;
+        width: 1px;
+        border-bottom: .7em solid #f00;
+        margin: 0 .5em;
+    }
+
     // 示例代码
     .ellipsis-demo,
     .line-clamp-demo,
@@ -593,8 +620,15 @@ export default {
     }
     .icon-text-container-demo2 {
         font-size: 28px;
-        // line-height: 2em;
         padding: 14px 0;
+    }
+    .space-item-demo {
+        outline: 1px solid #999;
+        font-size: 14px;
+    }
+    .space-item-demo2 {
+        outline: 1px solid #999;
+        font-size: 28px;
     }
 }
 </style>
