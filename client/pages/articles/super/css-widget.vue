@@ -176,7 +176,7 @@ export default {
             this.factory(
                 '小图大字',
                 `<div class="img-text-container img-text-container-demo">
-                    <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543398185822&di=7ccd63fa548b7ff15b29ca0b2faf1127&imgtype=0&src=http%3A%2F%2Fcdnimg103.lizhi.fm%2Faudio_cover%2F2018%2F01%2F28%2F2649655558190180871_320x320.jpg">
+                    <img src="/logo.png">
                     图片配文字
                 </div>`
             );
@@ -189,43 +189,59 @@ export default {
 
             // 小图大字
             this.factory(
-                '数据为空&暂无权限',
+                '文字间隔',
                 `<div class="icon-text-container icon-text-container-demo">
-                    <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543398185822&di=7ccd63fa548b7ff15b29ca0b2faf1127&imgtype=0&src=http%3A%2F%2Fcdnimg103.lizhi.fm%2Faudio_cover%2F2018%2F01%2F28%2F2649655558190180871_320x320.jpg">
+                    <img src="/logo.png">
                     x图片配文字
                 </div>`
             );
             this.factory(
-                '数据为空&暂无权限',
+                '文字间隔',
                 `<div class="icon-text-container icon-text-container-demo iconfont icon-setting">
                     x图标配文字
                 </div>`
             );
             this.factory(
-                '数据为空&暂无权限',
+                '文字间隔',
                 `<div class="icon-text-container icon-text-container-demo2">
-                    <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543398185822&di=7ccd63fa548b7ff15b29ca0b2faf1127&imgtype=0&src=http%3A%2F%2Fcdnimg103.lizhi.fm%2Faudio_cover%2F2018%2F01%2F28%2F2649655558190180871_320x320.jpg">
+                    <img src="/logo.png">
                     x图片配文字
                 </div>`
             );
+
             this.factory(
-                '数据为空&暂无权限',
+                '文字间隔',
                 `<div class="icon-text-container icon-text-container-demo2 iconfont icon-setting">
                     x图标配文字
                 </div>`
             );
 
+            // 文字间隔
             this.factory(
-                '布局',
+                '数据为空&暂无权限',
                 `<div class="space-item-demo">
                     <span class="space-item">第一段文字</span><span class="space-item">第二段文字</span><span class="space-item">第三段文字</span>
                 </div>`
             );
 
             this.factory(
-                '布局',
+                '数据为空&暂无权限',
                 `<div class="space-item-demo2">
                     <span class="space-item">第一段文字</span><span class="space-item">第二段文字</span><span class="space-item">第三段文字</span>
+                </div>`
+            );
+
+            this.factory(
+                '布局',
+                `<div class="no-right iconfont icon-no-right no-right-demo">
+                    暂无权限
+                </div>`
+            );
+
+            this.factory(
+                '布局',
+                `<div class="data-empty iconfont icon-empty data-empty-demo">
+                    暂无数据
                 </div>`
             );
         },
@@ -599,6 +615,21 @@ export default {
         width: 1px;
         border-bottom: .7em solid #f00;
         margin: 0 .5em;
+    }
+
+    // 暂无数据，暂无权限
+    .no-right,
+    .data-empty {
+        text-align: center;
+        padding: 50px 0;
+        color: #555;
+    }
+    .icon-no-right:before,
+    .icon-empty:before {
+        display: block;
+        margin: 0 auto;
+        font-size: 48px;
+        margin-bottom: 10px;
     }
 
     // 示例代码
