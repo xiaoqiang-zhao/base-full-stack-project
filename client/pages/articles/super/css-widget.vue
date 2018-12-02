@@ -220,29 +220,42 @@ export default {
             this.factory(
                 '数据为空&暂无权限',
                 `<div class="space-item-demo">
-                    <span class="space-item">第一段文字</span><span class="space-item">第二段文字</span><span class="space-item">第三段文字</span>
+                    <span class="space-item">
+                        第一段文字</span><span class="space-item">
+                        第二段文字</span><span class="space-item">
+                        第三段文字
+                    </span>
                 </div>`
             );
 
             this.factory(
                 '数据为空&暂无权限',
                 `<div class="space-item-demo2">
-                    <span class="space-item">第一段文字</span><span class="space-item">第二段文字</span><span class="space-item">第三段文字</span>
+                    <span class="space-item">
+                        第一段文字</span><span class="space-item">
+                        第二段文字</span><span class="space-item">
+                        第三段文字
+                    </span>
                 </div>`
             );
 
             this.factory(
-                '布局',
+                '加载中',
                 `<div class="no-right iconfont icon-no-right no-right-demo">
                     暂无权限
                 </div>`
             );
 
             this.factory(
-                '布局',
+                '加载中',
                 `<div class="data-empty iconfont icon-empty data-empty-demo">
                     暂无数据
                 </div>`
+            );
+
+            this.factory(
+                '布局',
+                '<div class="loading loading-demo"></div>'
             );
         },
 
@@ -630,6 +643,52 @@ export default {
         margin: 0 auto;
         font-size: 48px;
         margin-bottom: 10px;
+    }
+
+    // 加载中
+    .loading {
+        width: 40px;
+        height: 40px;
+        position: relative;
+        margin: 100px auto;
+    }
+    .loading::before,
+    .loading::after {
+        content: '';
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background-color: #333;
+        opacity: .6;
+        position: absolute;
+        top: 0;
+        left: 0;
+        animation: sk-bounce 2.0s infinite ease-in-out;
+    }
+    .loading::after {
+        animation-delay: -1.0s;
+    }
+
+    @-webkit-keyframes sk-bounce {
+        0%,
+        100% {
+            -webkit-transform: scale(0.0);
+        }
+        50% {
+            -webkit-transform: scale(1.0);
+        }
+    }
+
+    @keyframes sk-bounce {
+        0%,
+        100% { 
+            transform: scale(0.0);
+            -webkit-transform: scale(0.0);
+        }
+        50% { 
+            transform: scale(1.0);
+            -webkit-transform: scale(1.0);
+        }
     }
 
     // 示例代码
