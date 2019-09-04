@@ -19,7 +19,13 @@ MongoDB 附注：
 - 启动 MongoDB: sudo /usr/local/mongodb-osx-x86_64-enterprise-3.6.0/bin/mongod；
 - 新建数据库，数据库名 base_full_stack_project；
 - 数据库配置在 mongod.conf 文件中。
-
+- 数据导出: mongoexport -d base_full_stack_project -c articles tags users -o outpath --type json
+```
+cd /usr/local/mongodb-osx-x86_64-enterprise-3.6.0/bin
+./mongoexport -d base_full_stack_project -c articles -o ~/data-export/articles.json --type json
+./mongoexport -d base_full_stack_project -c tags -o ~/data-export/tags.json --type json
+./mongoexport -d base_full_stack_project -c users -o ~/data-export/users.json --type json
+```
 ## 部署
 
 ```shell
