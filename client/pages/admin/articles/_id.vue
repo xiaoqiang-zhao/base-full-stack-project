@@ -86,7 +86,7 @@ import 'element-ui/lib/theme-chalk/message.css';
 
 import elTable from 'element-ui/lib/table';
 import elTableColumn from 'element-ui/lib/table-column';
-import 'element-ui/lib/theme-default/table.css';
+import 'element-ui/lib/theme-chalk/table.css';
 import elButton from 'element-ui/lib/button';
 import elForm from 'element-ui/lib/form';
 import 'element-ui/lib/theme-chalk/form.css';

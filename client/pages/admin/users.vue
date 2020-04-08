@@ -90,7 +90,7 @@
  */
 import elTable from 'element-ui/lib/table';
 import elTableColumn from 'element-ui/lib/table-column';
-import 'element-ui/lib/theme-default/table.css';
+import 'element-ui/lib/theme-chalk/table.css';
 import elButton from 'element-ui/lib/button';
 import messageBox from 'element-ui/lib/message-box';
 import 'element-ui/lib/theme-chalk/message-box.css';

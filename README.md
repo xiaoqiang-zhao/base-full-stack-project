@@ -6,7 +6,7 @@
 
 *不保证 Windows 系统的兼容性*
 
-1. 安装 `Node.js[必须]` `MongoDB[必须]`
+1. 安装 `Node.js[必须]` 和 `MongoDB[必须]`
 2. `npm install` 安装依赖包
 3. `npm run db` 启动数据库服务
 4. `npm run dev` 启动开发环境
@@ -14,18 +14,29 @@
 6. done!
 
 MongoDB 附注：
-- 在根目录下新建 data/db: `sudo mkdir -p /data/db`;
-- 然后把 MongoDB 的包放到 /usr/local 下，当前项目用的是 mongodb-osx-x86_64-enterprise-3.6.0 这一版；
-- 启动 MongoDB: sudo /usr/local/mongodb-osx-x86_64-enterprise-3.6.0/bin/mongod；
+- 在根目录下新建 data/db: `sudo mkdir -p /data/db`；
+- MongoDB 下载地址: https://www.mongodb.com/download-center/community
+- 然后把 MongoDB 的包放到 /usr/local 下，当前项目用的是 mongodb-macos-x86_64-4.2.5 这一版；
+- 启动 MongoDB: sudo /usr/local/mongodb-macos-x86_64-4.2.5/bin/mongod；
 - 新建数据库，数据库名 base_full_stack_project；
 - 数据库配置在 mongod.conf 文件中。
 - 数据导出: mongoexport -d base_full_stack_project -c articles tags users -o outpath --type json
-```
-cd /usr/local/mongodb-osx-x86_64-enterprise-3.6.0/bin
+
+```shell
+cd /usr/local/mongodb-macos-x86_64-4.2.5/bin
 ./mongoexport -d base_full_stack_project -c articles -o ~/data-export/articles.json --type json
 ./mongoexport -d base_full_stack_project -c tags -o ~/data-export/tags.json --type json
 ./mongoexport -d base_full_stack_project -c users -o ~/data-export/users.json --type json
 ```
+
+导入数据: 
+
+```shell
+./mongoimport -d base_full_stack_project -c articles --file /Users/zhaoxiaoqiang/Desktop/articles.json --type json
+./mongoimport -d base_full_stack_project -c users --file /Users/zhaoxiaoqiang/Desktop/users.json --type json
+./mongoimport -d base_full_stack_project -c tags --file /Users/zhaoxiaoqiang/Desktop/tags.json --type json
+```
+
 ## 部署
 
 ```shell
